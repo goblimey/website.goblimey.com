@@ -1,0 +1,174 @@
+include(sourceRoot/definitions.m4)
+define(pageTitle, `Installing Software')
+include(sourceRoot/leader.m4.html)
+
+linksList(`server.html', `index.html', `web.server.html')
+
+<h3>Git and Docker</h3>
+<p>
+	You will need git and docker on your server, so install them.
+</p>
+<p><a href='https://www.digitalocean.com/community/tutorials/how-to-install-git-on-debian-10'>installing git</a></p>
+
+<p><a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-debian-10">installing
+		docker</a></p>
+
+
+
+<h3>Creating a User</h3>
+<p>
+	The root user is very useful for setting up the server,
+	but it has a very high level of privilege
+	and a mistake can be disastrous.
+	Next we create an ordinary user
+	which we will use for normal work.
+	Here I call that user <b>simon</b>.
+	We want to create a user with no password
+	and the contents of your public key in its <b>authorized_keys</b> file.
+	Once logged in, it needs to be able to run docker.
+</p>
+<p>
+	You need to get the command shown below exactly right,
+	so if you're not used to Linux,
+	copy and paste them.
+	Note that pasting into a git bash command window
+	doesn't work the way you might expect.
+	To paste, right-click anywhere in your command window and select Paste from the menu that appears.
+</p>
+<p>
+	First, set the name of your user. I'm going to call my user "simon".
+</p>
+<p>
+<pre>
+    user=simon
+</pre>
+That creates a variable containing the name of the user.
+Change that line according to your needs.
+You can then copy and paste the rest of these commands verbatim.
+The text ${user} in the commands below is replaced automatically
+by whatever user name you set.
+</p>
+<pre>
+    useradd ${user} --create-home
+    usermod -L ${user}
+    mkdir /home/${user}/.ssh
+    chmod 700 /home/${user}/.ssh
+    chown -R ${user}:${user} /home/${user}/.ssh
+    usermod -aG docker ${user}
+</pre>
+The new user is locked so you can't log in yet.
+Start a second command window on your computer and
+set the user name again (It only works in one window).
+Create another variable containing the name of your domain:
+<pre>
+    user=simon
+    domain=example.com
+</pre>
+Copy and paste this command. It copies your public key
+across the network to the server and calls the result authorized_keys:
+<pre>
+    scp ~/.ssh/id_rsa.pub root@${domain}:/home/${user}/.ssh/authorized_keys
+</pre>
+In my case
+that would be the same as typing this:
+<pre>
+    scp ~/.ssh/id_rsa.pub root@example.com:/home/simon/.ssh/authorized_keys
+</pre>
+which means "take the file id_rsa.pub from the .ssh directory in my home directory
+on this machine,
+connect over the network to the machine called example.com as its user root,
+copy my file to the .ssh directory in
+the user simon's home directory and call it authorized_keys".
+<p>
+	Back in your first command window
+	(which is logged into the droplet as root)
+	change the ownership of the files you just created
+	so that they belong to your new user:
+<pre>
+    chown -R ${user}:${user} /home/${user}/.ssh
+</pre>
+</p>
+<p>
+	Now you can use your second command window to
+	connect to your server as your new user:
+<pre>
+    ssh ${user}@${domain}
+</pre>
+</p>
+<p>
+	Now you are logged into your server from two command
+	windows.
+	In one you are logged in as root, and one mistake there can be disastrous.
+	In the other you are logged in as your ordinary user,
+	which is much safer.
+	You don't need root access now
+	so disconnect the first window -
+	click on it, hold down the ctrl key and type 'd' just once - no enter key needed.
+	The command window stays running,
+	but it's no longer connected to the remote machine.
+	any command you type in there runs on your local machine.
+</p>
+<p>
+	In the second window,
+	which is still logged in,
+	check that your ordinary account can run docker
+	by running the docker hello-world test container.
+	This just displays "Hello from Docker!"
+	along with lots of other stuff:
+<pre>
+    docker run hello-world
+</pre>
+That produces:
+<pre>
+    Unable to find image 'hello-world:latest' locally
+    latest: Pulling from library/hello-world
+    2db29710123e: Pull complete 
+    Digest: sha256:37a0b92b08d4919615c3ee023f7ddb068d12b8387475d64c622ac30f45c29c51
+    Status: Downloaded newer image for hello-world:latest
+	
+    Hello from Docker!
+    This message shows that your installation appears to be working correctly.
+	
+    To generate this message, Docker took the following steps:
+    1. The Docker client contacted the Docker daemon.
+    2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+    3. The Docker daemon created a new container from that image which runs the
+        executable that produces the output you are currently reading.
+    4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+	
+    To try something more ambitious, you can run an Ubuntu container with:
+    $ docker run -it ubuntu bash
+	
+    Share images, automate workflows, and more with a free Docker ID:
+    https://hub.docker.com/
+	
+    For more examples and ideas, visit:
+    https://docs.docker.com/get-started/
+</pre>
+</p>
+<p>
+	You have a user which is safe to use -
+	you can't wreck your system
+	by making a simple mistake.
+	Your user can also run docker.
+	As we'll see later,
+	that makes it very easy to install services.
+</p>
+<h3>Help With Linux Commands</h3>
+<p>
+	If you've not used Linux before,
+	you can use docker to run some software
+	that teaches you some more useful commands.
+	You can find out more about that
+	<a href="/projects/learn">here</a>
+</p>
+<h3>Next Step - Installing a Web server</h3>
+<p>
+	Now you can install a web server.
+	Find out how to do that
+	<a href="web.server.html">here</a>.
+</p>
+
+include(sourceRoot/trailer.m4.html)

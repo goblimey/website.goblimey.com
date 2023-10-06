@@ -1,0 +1,38 @@
+include(sourceRoot/definitions.m4)
+define(pageTitle, `Running Learn')
+include(sourceRoot/leader.m4.html)
+
+linksList(2.running.learn.html, index.html, 4.about.learn.html)
+
+<h3>Shutting Down the Learn System</h3>
+
+<p>If you don't end the docker session tidily by typing CTRL and d,
+	it will continue to run in the background, using up
+	computer memory.
+	You can end the session forcibly if you know its container ID.
+	To find that out, start another
+	command window and do this:
+
+<pre>
+    sudo docker ps
+</pre>
+
+That produces a list of running docker containers, something like:
+
+<pre>
+    CONTAINER ID  IMAGE        COMMAND                CREATED        STATUS       PORTS     NAMES
+    a5666adfd5d5  68b1841290ef "/bin/sh -c /usr/loc…" 2 minutes ago  Up 2 minutes 2101/tcp  happy_bassi
+</pre>
+</p>
+
+<p>In that example, docker is running image 68b1841290ef in container ID a5666adfd5d5. Stop that container like so,
+	using its container ID:</p>
+
+<pre>
+    docker kill a5666adfd5d5
+</pre>
+
+<br>
+linksList(2.running.learn.html, index.html, 4.about.learn.html)
+
+include(sourceRoot/trailer.m4.html)

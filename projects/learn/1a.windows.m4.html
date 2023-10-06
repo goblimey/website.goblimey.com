@@ -1,0 +1,138 @@
+include(sourceRoot/definitions.m4)
+define(pageTitle, `Learn Under Windows')
+include(sourceRoot/leader.m4.html)
+<br>
+linksList(1.installing.learn.html, index.html, 2.running.learn.html)
+
+<h2>Installing Learn under Microsoft Windows</h2>
+
+
+<p>You need to install Docker and git.
+</p>
+<p>
+	When running under Windows,
+	Docker depends upon the Windows Subsystem for Linux version 2 (WSL2).
+	This is available from Windows 10 onwards,
+	but you may have to install it.
+	It will only run on a machine with a 64-bit processor.
+</p>
+
+<h3>Installing WSL2</h3>
+
+<p>
+	Microsoft's instructions (below)
+	assume that you know how to run a command window in administrator
+	mode.
+	In the search box at the bottom of the screen, type <b><i>cmd</i></b>
+	and press the enter key.
+	In the window that appears,
+	right-click on the black CMD icon and select Run in Administrator Mode.
+</p>
+<p>
+	That starts a DOS Command window. In there, type:
+</p>
+<pre>
+	wsl  --install
+</pre>
+<p>
+	and press the enter key.
+	(That's "wsl space hyphen hyphen install".)
+
+</p>
+<p>
+	For the record, Microsoft's instructions are
+	<a href="https://learn.microsoft.com/en-us/windows/wsl/install/">here</a>
+	You only need to run the wsl command -
+	don't bother with all the stuff about choosing distros etc.
+</p>
+
+<h3>Installing Docker</h3>
+
+<p>
+	Follow <a href="https://docs.docker.com/desktop/install/windows-install/">
+		these instructions
+	</a>.
+	As explained there,
+	Docker is free to use at home
+	but large companies must pay a fee.
+</p>
+<p>
+	The instructions tell you to run some commands "in a terminal".
+	That's your DOS command window.
+</p>
+<p>
+	Once Docker is installed,
+	a Whale icon appears on your desktop.
+	Double click on that to start the Docker engine.
+	A window appears, which you can ignore.
+	You just need the engine running.
+</p>
+<h3>Installing and running Git Bash</h3>
+<p>
+	Install git bash using
+	<a href="https://git-scm.com/download/win/">these instructions</a>.
+<p>
+	Run Git Bash from your Start menu.
+	That starts another kind of command window,
+	which you use to download the learn software.
+</p>
+<h3>Installing the Learn Software</h3>
+<p>
+	Do this from your git bash window.
+	You must get these commands exactly right,
+	so copy and past them.
+	To paste into a git bash window,
+	right click anywhere in the window and
+	use the Paste option in the menu that appears.
+</p>
+<p>
+	Download learn like so:
+<pre>
+    git  clone  https://github.com/goblimey/learn-unix
+</pre>
+That creates a directory called learn-unix
+containing the material.
+</p>
+<p>
+	Start another DOS command window.
+	(This one doesn't need admin privilege
+	so just type <b>cmd</b> in the search box
+	at the bottom of the screen
+	and double-click the black CMD icon.)
+</p>
+<p>
+	In that window,
+	change to the learn-unix directory
+	and build the software like so:
+<pre>
+    cd  learn-unix
+
+    docker  build  .  -t  learnunix
+</pre>
+(That's docker space build space
+dot space hyphen t space learnunix.)
+</p>
+<p>
+	That last command will take a few minutes and display a running commentary.
+	If all goes well, the last few lines
+	should be something like:
+<pre>
+    => => naming to docker.io/library/learnunix
+
+    What's Next?
+        View summary of image vulnerabilities and recommendation -> docker scout quickview
+</pre>
+</p>
+<p>
+	The first of those lines means that docker has built an image called learnunix
+
+	The second line suggests that you run docker scout.
+	That will show you any issues reported about any of the components
+	that the image is built from.
+	You may choose to not bother with that right now.
+</p>
+
+<br>
+linksList(1.installing.learn.html, index.html, 2.running.learn.html)
+
+include(sourceRoot/trailer.m4.html)

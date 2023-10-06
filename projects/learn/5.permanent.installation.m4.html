@@ -1,0 +1,54 @@
+include(sourceRoot/definitions.m4)
+define(pageTitle, `Running Learn')
+include(sourceRoot/leader.m4.html)
+
+linksLastPage(4.about.learn.html, index.html)
+
+
+<h3>Permanent Installation</h3>
+
+<p>Docker just packages up the compiling and installing of learn.
+	If you have a UNIX or Linux system available
+	and don't want to bother with Docker,
+	you can clone the github repository and install learn permanently like so:</p>
+<pre>
+    git clone https://github.com/goblimey/learn-unix
+
+    cd learn-unix/learn
+
+    ./configure
+
+    make
+
+    sudo make install
+    </pre>
+
+<p>Users of the same computer can then run it like so:
+<pre>
+    learn files
+</pre>
+</p>
+<p>See the INSTALL file in the learn directory for more complex installations.</p>
+
+<p>There are three programs, learn, lcount and learn.tee. Learn is the front end and the user only needs to find that.
+</p>
+
+<p>The lessons are text files. They are stored in the lib directory which contains a directory for each course. Lesson
+	3.1a is in the file L3.1a, and so on.</p>
+
+<p>The directory man contains the manual entries in nroff format.
+	When running the docker image, type "man learn" to
+	read the one for learn.</p>
+
+<p>
+	Volume 2 of the version 7 UNIX manual
+	contains papers about different aspects of UNIX
+	including one by Kernighan and Lesk on the learn system.
+	That's available in PDF form from
+	<a href="https://wolfram.schneider.org/bsd/7thEdManVol2/learn/learn.pdf/">here</a>.
+</p>
+
+linksLastPage(4.about.learn.html, index.html)
+
+
+include(sourceRoot/trailer.m4.html)

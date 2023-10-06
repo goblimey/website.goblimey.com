@@ -1,0 +1,90 @@
+include(../../definitions.m4)
+define(pageTitle, `Installing the Scaffolder')
+include(../../leader.m4.html)
+
+linksList(`1.1.installing.go.html', `index.html', `1.3.installing.mysql.html')
+
+<h1>The Goblimey Scaffolder</h1>
+<h2>1.2 Installing the Scaffolder</h2>
+<p>
+	This section assumes that you have set up your environment variables
+	<b>PATH</b> and <b>GOPATH</b> as described in the previous section.
+</p>
+<p>
+	The scaffolder
+	needs various bits and pieces of ready-made Go software,
+	so download those first.
+</p>
+
+<p>
+	You need to use a command window to do this.
+	(Under Windows 7 use the <b>Command Prompt</b> option in the Start menu
+	to start a command window.)
+</p>
+<p>
+	Run these commands:
+</p>
+<pre><code>
+    go get github.com/go-sql-driver/mysql
+    go get gopkg.in/gorp.v1
+    go get github.com/emicklei/go-restful
+    go get github.com/petergtz/pegomock/pegomock
+    go get github.com/goblimey/scaffolder
+	</code></pre>
+<p>
+	Those commands download ready-made Go projects onto your computer
+	including the scaffolder.
+	Your <b>GOPATH</b> variable says where they will be stored.
+	In my case that's "/home/simon/goprojects".
+</p>
+<p>
+	Note: by default, "go get" doesn't update any projects that you have already downloaded.
+	If you downloaded any of those projects a long time ago,
+	you may wish to update them to the latest version using the -u flag, for example:
+</p>
+<pre><code>
+    go get -u github.com/petergtz/pegomock/pegomock
+    </code></pre>
+<p>
+	If I run the first of those "go get" commands on Linux,
+	it creates a directory /home/simon/goprojects/src/github.com/go-sql-driver/mysql
+	containing some files.
+	This is the source material for a MySQL driver.
+	The command also creates a file
+	/home/simon/goprojects/pkg/linux_amd64/github.com/go-sql-driver/mysql.a
+	containing a built version of this driver ready to run on the AMD processor of my PC under Linux.
+</p>
+<p>
+	The fourth "go get" command downloads the pegomock tool and creates a directory
+	/home/simon/goprojects/bin containing the resulting executable (AKA "binary") program.
+	Whenever you use "go get" to download a Go project that produces an executable program,
+	this is where the built result will be stored.
+</p>
+<p>
+	The final command in the list builds the scaffolder
+	and puts the resulting executable program in the goprojects bin directory.
+</p>
+<p>
+	Your <b>PATH</b> environment variable contains a list of directories, each of which
+	should contain executable programs.
+	If you type the name of a program that's in one of those directories,
+	the system will find it and run it.
+	You added the goprojects bin directory to your path earlier,
+	so once you have installed the scaffolder,
+	you can run it like so:
+</p>
+<pre><code>
+	$ scaffolder
+	</code></pre>
+<p>
+	Don't do that just yet, you need to create a configuration file first.
+</p>
+<table>
+	<tr>
+		<td><a href='index.html'>Contents Page</a></td>
+		<td><a href='1.1.installing.go.html'>Previous</a></td>
+		<td><a href='1.3.installing.mysql.html'>Next</a></td>
+	</tr>
+</table>
+
+include(../../trailer.m4.html)

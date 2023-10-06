@@ -1,0 +1,150 @@
+include(../../definitions.m4)
+define(pageTitle, `Running the Scaffolder')
+include(../../leader.m4.html)
+
+linksList(`2.2.the.json.spec.html', `index.html', `2.4.running.the.server.html')
+
+<h1>The Goblimey Scaffolder</h1>
+<h2>2.3 Running the Scaffolder</h2>
+<p>
+	The scaffolder takes the JSON specification and
+	produces a web server that manages the database tables described by the JSON.
+	The first time you run the server,
+	it creates the tables.
+</p>
+<p>
+	By default the scaffolder generates a Go project in the current directory, which should be your github project
+	directory
+	(in the example, goprojects/src/github.com/alunsmithie/animals).
+	Alternatively you can run it from another directory and
+	tell it where to find the project directory.
+</p>
+<p>
+	When you run the scaffolder,
+	by default it looks for a file "scaffold.json" in the current directory
+	defining the database - something like the example above.
+	You can specify a different file.
+</p>
+<p>
+
+	To get started, there is a version of the example JSON in the scaffolder source code.
+	In your Go workspace, look in src/github.com/goblimey/scaffolder/examples.
+	Copy the file animals.scaffold.json to your project directory,
+	rename it scaffold.json and edit it to set the source base of your project.
+	If you created a github account and a project,
+	the source base value will be something like "github.com/alunsmithie/animals".
+	If you just created a directory in goprojects/src,
+	it will be the name of that directory.
+</p>
+<p>
+	In your command window, cd to your project directory and then run the scaffolder
+	like so:
+</p>
+<pre><code>
+    $ scaffolder
+	</code></pre>
+<p>
+	That creates the source code of your web server and some scripts.
+	On Linux, install.sh builds and installs the server:
+</p>
+<pre><code>
+   $ ./install.sh
+	</code></pre>
+<p>
+	On Windows, install.bat does the same:
+</p>
+<pre><code>
+    install
+	</code></pre>
+<p>
+	There is also test.sh and test.bat.
+	These run tests to ensure that the generated code works .
+	For example, on Linux:
+</p>
+<pre><code>
+    $ ./test.sh
+	</code></pre>
+
+<p>
+	If you edit the JSON and run the scaffolder again
+	it will produce a new version of the server.
+	HOWEVER it only creates database tables if they don't already exist.
+	If you add extra fields,
+	use the mysql client to drop the tables before you start the server.
+	It will then create new ones.
+	Dropping the tables will destroy any data that you have created.
+	Alternatively, leave your project as it is and
+	create a new one that uses a different database.
+	(This is why you might not want to create a public project on the github
+	just to do a bit of prototyping.)
+</p>
+<p>
+	To specify the JSON file:
+<pre><code>
+    $ scaffolder ../specs/animals.json
+	</code></pre>
+<p>
+	To specify the workspace directory as well:
+</p>
+<pre><code>
+    $ scaffolder workspace=/home/simon/goprojects ../specs/animals.json
+	</code></pre>
+<p>
+	Run the scaffolder program like so to see all of the options:
+</p>
+<pre><code>
+    $ scaffolder -h
+    Usage of scaffolder:
+      -overwrite
+          overwrite all files, not just the generated directory
+     -projectdir string
+          the project directory (default ".")
+     -templatedir string
+          the directory containing the scaffold templates (normally this is not specified and built in templates are used)
+      -v enable verbose logging (shorthand)
+      -verbose
+          enable verbose logging
+	</code></pre>
+<p>
+	The scaffolder creates
+</p>
+<ul>
+	<li>install.sh - a shell script to build the animals server</li>
+	<li>install.bat - a batch file to do the same on Windows</li>
+	<li>test.sh - a shell script to run the test suite</li>
+	<li>test.bat - same for Windows</li>
+	<li>animals.go - the source code of the main module</li>
+	<li>generated - the source code of the models, views, controllers,
+		repositories and support software</li>
+	<li>views - the templates used to create the html views</li>
+</ul>
+</p>
+<p>
+	It's assumed that you may want to tweak things like the scripts, the main program, the home page and so on. If you
+	run the scaffolder over this project again, by default only the stuff in the "generated" directories is overwritten.
+</p>
+<p>
+	If you run the scaffolder with the overwrite option, it replaces everything.
+</p>
+<p>
+	The project includes tests which are run by the test script test.sh (or test.bat on Windows).
+	This can run the unit tests, the integration tests or (by default) both. NOTE that some integration tests use the
+	real database. It's safe to run them now, but if you run them after you've been playing with the web server, any
+	data that you have set up will be trashed.
+</p>
+<code><pre>
+    $ ./test.sh unit
+	</pre></code>
+runs just the unit tests, and that's always safe.
+
+</p>
+
+<table>
+	<tr>
+		<td><a href='index.html'>Contents Page</a></td>
+		<td><a href='2.2.the.json.spec.html'>Previous</a></td>
+		<td><a href='2.4.running.the.server.html'>Next</a></td>
+	</tr>
+</table>
+
+include(../../trailer.m4.html)

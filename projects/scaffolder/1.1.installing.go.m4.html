@@ -1,0 +1,136 @@
+include(../../definitions.m4)
+define(pageTitle, `Installing Go')
+include(../../leader.m4.html)
+
+linksFirstPage(`index.html', `1.2.installing.the.scaffolder.html')
+
+<h2>The Goblimey Scaffolder</h2>
+<h3>1.1 Installing Go</h3>
+<p>
+	Instructions for installing Go are <a href='https://golang.org/doc/install'>here</a>
+</p>
+<p>
+	That document shows several ways to install Go.
+	It's a very good idea to install it from source code,
+	but that's not the simplest option.
+	If you are running under Windows and you just want to get started quickly,
+	the MSI installer is simpler, but there is a cost to going down that route.
+	On every new release of Go,
+	you will have to wait for the MSI installer to become available.
+	If you want to keep up-to-date with latest releases,
+	you should follow the source code option.
+</p>
+<p>
+	Once you have installed Go, you need to read the document
+	<a href='https://golang.org/doc/code.html'>How to Write Go Code</a>
+	which describes how to set up your Go environment.
+</p>
+<p>
+	As that document explains,
+	you can keep all your Go projects together in one directory (AKA folder),
+	and that needs to be defined by an environment variable GOPATH.
+	I'm going to assume that you will use
+	a directory called goprojects in your home directory.
+</p>
+<p>
+	My user name is simon so under Linux my home directory is /home/simon.
+	Under Windows it's C:\Users\simon.
+</p>
+<p>
+	In the examples below, "$ command"
+	represents a command that you issue in a Linux command window.
+	The "$" represents the prompt that the command window gives you.
+	Type the command (without the dollar)
+	and press the enter key to run it.
+</p>
+<p>
+	Using your command window, create your project directory:
+</p>
+<code>
+	$ mkdir goprojects
+	</code>
+<p>
+	Set the GOPATH environment variable
+	and add the workspace's bin subdirectory to your PATH.
+</p>
+<p>
+	Under Linux:
+<pre><code>
+    $ export GOPATH=/home/{your user name}/goprojects
+    $ export PATH=$PATH:$GOPATH/bin
+	</code></pre>
+In my case, that would be:
+</p>
+<pre><code>
+    $ export GOPATH=/home/simon/goprojects
+    $ export PATH=$PATH:$GOPATH/bin
+	</code></pre>
+<p>
+	That only sets those variables for that command window.
+	You should also add the same commands to the file .profile in your home directory so that they are run every time
+	you log in and apply to all command windows.
+</p>
+<p>
+	Under Windows 7:
+</p>
+<p>
+	Go to the control panel in the Start menu. Choose System, then System Security.
+	In the left-hand menu, choose Advanced System Settings.
+</p>
+<p>
+	That produces a pop-up window with a button marked Environment Settings.
+	Press that and the Environment Variables window appears.
+	In the list of user variables at the top, there should be one called <b>Path</b>.
+	It's a list of directories separated by semicolons.
+</p>
+<p>
+	Use the New button to create an environment variable called <b>Path</b> set to "c:\Users\\{your user
+	name}\goprojects". In my case, that's "c:\Users\simon\goprojects".
+</p>
+<p>
+	Still in the Environment Variables window,
+	find the user variable called <b>Path</b> and select it.
+	Press the Edit button.
+</p>
+<p>
+	Run to the end of the line (it may be quite long) and
+	add a semicolon followed by the GOPATH bin directory:
+</p>
+<pre><code>
+	;c:\Users\{your user name}\goprojects\bin
+	</code></pre>
+<p>
+	Press OK to make the change.
+</p>
+<p>
+	Given that you have already created a variable GOPATH containing most of that text,
+	you could instead add this to the Path:
+</p>
+<pre><code>
+	;%GOPATH%\bin
+	</code></pre>
+<p>
+	Either way, don't forget the semicolon.
+</p>
+<p>
+	Those variables will be available to all command windows that you open from now on,
+	but NOT to any that you already have open.
+</p>
+<p>
+	Don't get confused between the <b>PATH</b> and the <b>GOPATH</b> variable.
+	<b>PATH</b> tells the system (Windows, Linux or whatever) where to find
+	executable programs.
+	<b>GOPATH</b> tells the Go tools where to find Go projects.
+	Both contain a list of directories (folders).
+	Under Windows, the items in the lists are separated by semicolons,
+	under Linux by colons.
+</p>
+
+<table>
+	<tr>
+		<td><a href='index.html'>Contents Page</a></td>
+		<td><a href='1.2.installing.the.scaffolder.html'>Next</a></td>
+	</tr>
+</table>
+
+include(../../trailer.m4.html)

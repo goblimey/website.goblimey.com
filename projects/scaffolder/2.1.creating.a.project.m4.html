@@ -1,0 +1,94 @@
+include(../../definitions.m4)
+define(pageTitle, `Creating a project')
+include(../../leader.m4.html)
+
+linksList(`1.3.installing.mysql.html', `index.html', `2.2.the.json.spec.html')
+
+<h1>The Goblimey Scaffolder</h1>
+<h2>2.1 Creating a Project</h2>
+<p>
+	The scaffolder generates Go source code.
+	Go source code is stored in a project directory, so you need to create one of those.
+	As the How to Write Go Code document explains,
+	you should structure your project as if you are going to store it in a repository.
+	The Github is the most popular repository so I'm going to assume that you will store it there.
+</p>
+<p>
+	If you are <b><i>absolutely convinced</i></b> that you are not going to store your
+	project in a repository,
+	then you just need to create a directory in the src directory of
+	your go project directory
+	(so in my case, that might be /home/simon/goprojects/src/animals).
+</p>
+<p>
+	DO NOT create a project on your computer and try to store it on the github later.
+	It's much easier to start with a github project and then clone a copy of it on your computer.
+	So the next thing to do is create a github project.
+</p>
+<p>
+	If you don't have a Github account, create one at
+	<a href='https://github.com'>github.com</a>.
+	It's free. For example, if your name is Alun Smithie, you could create an account called alunsmithie.
+	Your home page on the github would then be
+	https://github.com/alunsmithie.
+	I'm going to assume that in the following examples,
+	so replace "alunsmithie" with your github account name.
+</p>
+<p>
+	Back on your computer,
+	create subdirectories
+	in your goprojects directory matching the github structure
+	(so in this example
+	src/github.com/alunsmithie)
+	and change directory to it.
+</p>
+<p>
+	In a Linux command window:
+<pre><code>
+    $ mkdir -p $GOPATH/src/github.com/alunsmithie
+    $ cd $GOPATH/src/github.com/alunsmithie
+   </code></pre>
+On Windows:
+<pre><code>
+    mkdir %GOPATH%\src
+    mkdir %GOPATH%\src\github.com
+    mkdir %GOPATH%\src\github.com\alunsmithie
+    cd %GOPATH%\src\github.com\alunsmithie
+    </code></pre>
+<p>
+<p>
+	On your github home page, use the "+" button at the top to create a project.
+	If you call your projects "animals", it will have a URL something like https://github.com/alunsmithie/animals.
+</p>
+<p>
+	When you create your project, the Github will encourage you to
+	specify what sort of licence you will issue when you publish it,
+	and to set up a README.md file describing what the project is about.
+	(The README.md for the scaffolder project is
+	<a href='https://github.com/goblimey/scaffolder'>here</a>.
+	Most of it is created automatically by the github.)
+</p>
+
+<p>
+	Now you can clone your github project in your command window.
+	It's the same command on Linux and Windows.
+</p>
+<pre><code>
+     git clone https://github.com/alunsmithie/animals
+   </code></pre>
+<p>
+	That creates a directory "animals" containing a copy of any files you created on the github site -
+	the README.md and the license file.
+	It also contains some
+	magic hidden files that make it a local git repository.
+</p>
+
+<table>
+	<tr>
+		<td><a href='index.html'>Contents Page</a></td>
+		<td><a href='1.3.installing.mysql.html'>Previous</a></td>
+		<td><a href='2.2.the.json.spec.html'>Next</a></td>
+	</tr>
+</table>
+
+include(../../trailer.m4.html)

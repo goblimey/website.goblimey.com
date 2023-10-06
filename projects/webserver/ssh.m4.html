@@ -1,0 +1,210 @@
+include(sourceRoot/definitions.m4)
+define(pageTitle, `SSH keys')
+include(sourceRoot/leader.m4.html)
+
+linksFirstPage(, `domain.html')
+
+<h2>SSH Authentication Keys</h2>
+<p>
+	To access your server securely, you need ssh keys.
+	These are just two plain text files stored on your local machine,
+	one public and one private.
+	They're called keys because your droplet will be locked
+	and only somebody with the keys can get in.
+	You need to set up some keys before you create your droplet.
+	I believe that you can set up keys on a smartphone,
+	but I never have.
+	Here I assume that you are using a laptop or desktop computer.
+</p>
+<p>
+	If you use a Mac
+	<a
+		href='https://docs.joyent.com/public-cloud/getting-started/ssh-keys/generating-an-ssh-key-manually/manually-generating-your-ssh-key-in-mac-os-x'>
+		see this document</a>.
+	I believe that Windows from version 10 onwards
+	has the necessary software,
+	otherwise use the instructions in
+	<a
+		href='https://docs.joyent.com/public-cloud/getting-started/ssh-keys/generating-an-ssh-key-manually/manually-generating-your-ssh-key-in-windows'>
+		this page</a>.
+	It suggests two options, PuTTY and Git Bash.
+	I suggest you use the Git Bash option,
+	and in these notes
+	I will assume that you have.
+</p>
+<p>
+	If you take the defaults when you create your keys,
+	they will be created in a directory called <b>.ssh</b>
+	in your home directory.
+	You will produce files in there called
+	<b>id_rsa</b> (your private key)
+	and <b>id_rsa.pub</b> (your public key).
+	You need to keep the contents of the private key file to yourself,
+	but it's safe to let anyone see the contents of your public key.
+	That's the essential idea - nobody else
+	knows what's in your private key file
+	but anybody can know what's in your public key file.
+	The prvate key is password protected.
+	You need to supply the password to use it.
+</p>
+<p>
+	First, check that you haven't already created a pair of key files
+	months or years ago,
+	and forgotten.
+	In your command window, type
+</p>
+<pre>
+    ls ~/.ssh
+    ls: cannot access '/home/simon/.ssh': No such file or directory
+	</pre>
+<p>
+	If the ls command lists some files,
+	check that
+	<b>id_rsa</b> and
+	<b>id_rsa.pub</b>
+	are not already present.
+	If they are,
+	you already have what you need.
+</p>
+<p>
+	Create your keys using the <b>ssh_keygen</b> command.
+	I believe that this comamnd is now standard in Windows,
+	so you can run it in the standard cmd window.
+	If not, run it in a git bash window:
+</p>
+<pre>
+    ssh_keygen
+	</pre>
+
+The command will take you through creating the files.
+To create <b>id_rsa</b> and
+<b>id_rsa.pub</b>,
+just follow the default actions.
+You can choose another name when you create your keys
+but it make sthings a bit easier if you stick to the defaults.
+As you will see, you will need these keys when you create your server.
+</p>
+
+<p>
+	The files contain
+	encryption keys.
+	If you take a piece of text and encrypt it using your private key,
+	somebody else can use the matching public key
+	to decrypt it.
+</p>
+<p>
+	You can use the keys to <b>authenticate</b> yourself - verify your identity.
+	It goes something like this:
+	We meet up and you give me a copy of your public key file.
+	We agree a piece of text,
+	say "Abracadabra".
+	This text is called <b>the challenge</b>.
+	Later, you want to send me an email
+	which is guaranteed to come from you and not some imposter.
+	You encrypt the agreed challenge with your private key and put the result
+	in the email.
+	The encrypted version is a pile of unreadable junk.
+	If I can decrypt it junk
+	with your public key and the result is "Abracadabra",
+	then I know that it was you that sent the email.
+	Only your private key can produce the unreadable junk that,
+	when decrypted, produces the challenge.
+</p>
+<p>
+	(To prevent an evesdropper intercepting the encrypted text and using it
+	in an email of their own,
+	you can add the current date and time to the challenge
+	and encrypt the result.
+	That way, the encrypted version is time-sensitive
+	and can't be re-used.)
+
+</p>
+<p>
+	Strictly, I know that the email was sent by somebody
+	who has the private key that matches
+	the public key that you gave me,
+	which is why you need to keep the contents of
+	your private key to yourself.
+	Also, the scheme only works if we meet up
+	so that I know that it was really you that gave me the public key.
+	That's called "the key distribution problem."
+</p>
+<p>
+	The same principle can be used to authenticate yourself and
+	log in from the computer on your desk
+	(the <b>local machine</b>)
+	across the Internet
+	to the computer you are renting from the hosting company
+	(the <b>remote machine</b>).
+	As we will see later,
+	when you set up your remote machine,
+	you supply your public key.
+	Under the covers, the authentication procedure goes something like this:
+	when you try to log into the remote machine from your local machine,
+	behind the scenes
+	they agree a challenge.
+	Your local computer encrypts the challenge
+	using your private key and sends the result
+	across the Internet to the remote machine.
+	The remote machine decrypts what it receives
+	using your public key and
+	checks that the decrypted version matches the agreed challenge.
+	If so, it lets you log in.
+	You still have to supply a password to open your key,
+	but it's not sent across the network.
+	The Internet is a public medium
+	and various people could be monitoring the traffic
+	between the two computers,
+	but they can only see the encrypted challenge
+	and they can't use what they can see to masquerade as you
+	and log in to your server.
+</p>
+
+<p>
+	The key mechanism allows you to create users on your
+	computer that don't have a password
+	and can only connect to it using the keys.
+	As we will see,
+	as soon as you set up your server,
+	people will try to log into it using software that guesses passwords.
+	If any of your users have passwords,
+	however complex,
+	the password guessers will succeed eventually.
+	Authenticating using keys rather than passwords
+	is much more secure.
+</p>
+<p>
+	You can use an SSH key pair
+	to authenticate yourself on all sort of systems.
+	For example <a
+		href='https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/'>github</a>.
+
+</p>
+<p>
+	If you create keys on one computer to access a remote system,
+	and you want to connect to it from another computer,
+	you have to create a .ssh directory in your home
+	directory on the second computer and copy the keys across.
+</p>
+<p>
+	If you overwrite or remove your key files,
+	you can't recreate them,
+	so you will lose access to whichever system you were using them to connect to.
+	It's a good idea to keep a backup copy on a memory stick.
+</p>
+<p>
+	You can have many sets of keys with different names that you use
+	to access different systems.
+	When you create a key pair,
+	be careful not to overwrite any existing key files.
+</p>
+
+<table>
+	<tr>
+		<td style='width: 10%'><a href='index.html'>Contents Page</a></td>
+		<td style='width: 10%'><a href='domain.html'>Next</a></td>
+	</tr>
+</table>
+
+
+include(sourceRoot/trailer.m4.html)

@@ -1,0 +1,113 @@
+include(../../definitions.m4)
+define(pageTitle, `Running the Web Server')
+include(../../leader.m4.html)
+
+linksLastPage(`2.3.running.the.scaffolder.html', `index.html')
+
+<h1>The Goblimey Scaffolder</h1>
+<h2>2.4 Running the Web Server</h2>
+<p>
+	Once you've created, built and tested your web server,
+	you can start using it to set up data in your database.
+</p>
+
+<p>
+	Start the web server like so:
+</p>
+<pre><code>
+     $ animals
+     </code></pre>
+<p>
+	or you can run it in verbose mode and see tracing messages in your command window:
+</p>
+<pre><code>
+   	$ animals -v
+	</code></pre>
+<p>
+	The first time you run the server it will create the database tables.
+</p>
+<p>
+	The server runs on port 4000. In your web browser, navigate to
+	<a href='http://localhost:4000'>http://localhost:4000</a>
+</p>
+<p>
+	That display the home page of the application.
+</p>
+<table border='1'>
+	<tr>
+		<td><img src='/images/home.png'></td>
+	</tr>
+</table>
+<p>&nbsp;</p>
+<p>
+	The home page has two links "Manage cats" and "Manage mice".
+	The first takes you to the index page for the cat resource.
+</p>
+<table border='1'>
+	<tr>
+		<td><img src='/images/index.1.png'></td>
+	</tr>
+</table>
+<p>&nbsp;</p>
+<p>
+	The cats table is currently empty. Use the Create button to create a cat record.
+</p>
+<table border='1'>
+	<tr>
+		<td><img src='/images/create.1.png'></td>
+	</tr>
+</table>
+<p>&nbsp;</p>
+<p>
+	Fill in the values and press the <b>Create Cat</b> button.
+</p>
+<p>
+	If you don't supply all of the mandatory fields,
+	the create page appears again with error messages:
+</p>
+<table border='1'>
+	<tr>
+		<td><img src='/images/create.2.png'></td>
+	</tr>
+</table>
+<p>&nbsp;</p>
+<p>
+	Fix that problem
+</p>
+<table border='1'>
+	<tr>
+		<td><img src='/images/create.3.png'></td>
+	</tr>
+</table>
+<p>&nbsp;</p>
+<p>
+	and try again.
+	The server creates a cat record
+	and then displays the cat index page.
+	The index page lists the cats using the display label defined in the JSON
+	(the id, name and breed).
+	There are links and buttons to edit and delete the records,
+	and a link back to the home page.
+</p>
+<table border='1'>
+	<tr>
+		<td><img src='/images/index.2.png'></td>
+	</tr>
+</table>
+<p>&nbsp;</p>
+<p>
+	To add some mice, use the link to the home page and then the "Manage mice" link.
+</p>
+<p>
+	To stop the server, type ctrl/c in the command window. (Hold down the ctrl key and type a single "c", you don't need
+	to press the enter key.)
+</p>
+
+<table>
+	<tr>
+		<td><a href='index.html'>Contents Page</a></td>
+		<td><a href='2.3.running.the.scaffolder.html'>Previous</a></td>
+	</tr>
+</table>
+
+include(../../trailer.m4.html)

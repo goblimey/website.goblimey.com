@@ -1,0 +1,33 @@
+include(../../definitions.m4)
+define(pageTitle, `grpc')
+include(../../leader.m4.html)
+
+		<h2>gRPC</h2>
+		<p>
+                        gRPC is an open-source Remote Procedure Call mechanism developed by Google.
+                        It allows applications written in a range of 
+                        well-known programming languages, including Go,
+                        to exchange data.
+		</p>
+		<p>
+			This is important to Go developers
+			because most of us work in an existing software environment
+			written in Java, C# or whatever,
+			and anything we write in Go will have to interwork with that.
+		<p>
+		<p>
+			The Go version of the gRPC distribution includes example of clients and servers 
+			communicating over a clear-text channel,
+			but they don't show how to create an
+			encrypted (SSL) channel.
+			Encrypted channels are required in many enterprise environments,
+			so I enhanced one of Google's examples showing how to do it.
+		</p>
+		<p>
+			The github page for my enhanced example explains how to install
+			Protocol Buffers and gRPC.
+			It can be found
+			<a href='https://github.com/goblimey/grpc'>here</a>.
+		</p>
+
+include(../../trailer.m4.html)

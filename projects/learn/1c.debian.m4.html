@@ -1,0 +1,69 @@
+include(sourceRoot/definitions.m4)
+define(pageTitle, `Learn Under Windows')
+include(sourceRoot/leader.m4.html)
+<br>
+linksList(1.installing.learn.html, index.html, 2.running.learn.html)
+
+<h2>Installing Learn on an Apple Mac</h2>
+
+
+<p>
+	You need to install Docker and git.
+</p>
+<p>
+	<a href="https://www.digitalocean.com/community/tutorials/how-to-install-git-on-ubuntu-18-04/">installing git</a>
+</p>
+<p>
+	<a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04/">installing
+		Docker</a>
+</p>
+<p>
+	Start a command window.
+</p>
+<p>
+	If docker is installed but not active (started) this command will start it:
+	<br>
+<pre>
+	sudo systemctl start docker
+</pre>
+<br>
+This should only be necessary once.
+When you reboot,
+Docker should start automatically.
+</p>
+
+<p>
+	Download learn like so:
+<pre>
+    git  clone  https://github.com/goblimey/learn-unix
+</pre>
+That creates a directory called learn-unix
+containing the learn software.
+</p>
+<p>
+	Change directory to learn-unix
+	and build the software like so:
+<pre>
+    cd  learn-unix
+
+    docker  build  .  -t  learnunix
+</pre>
+(That's docker space build space
+dot space hyphen t space learnunix.)
+</p>
+<p>
+	That last command will take a few minutes and display a running commentary.
+	If all goes well, the last few lines
+	should be something like:
+<pre>
+    Successfully built 446990c342ad
+    Successfully tagged learnunix:latest
+</pre>
+<br>
+The build was successful and produced a Docker image with ID 446990c342ad.
+</p>
+
+<br>
+linksList(1.installing.learn.html, index.html, 2.running.learn.html)
+
+include(sourceRoot/trailer.m4.html)

@@ -1,0 +1,512 @@
+include(sourceRoot/definitions.m4)
+define(pageTitle, `Setting up a Server')
+include(sourceRoot/leader.m4.html)
+	
+links3(`domain.html', `index.html', `installing.software.html')
+
+	<h2>Setting up Your Server</h2>
+	<p>
+		Once you own a domain name,
+		you can set up your server.
+	</p>
+	<p>
+		Your Server is a rented virtual computer somewhere in the cloud.
+		Many companies offer them.
+		If you want to do research,
+		type "cheap hosting services" into a search engine.
+
+	</p>
+	<p>
+		I've found the Digital Ocean service 
+		fairly cost effective for small organisations.
+		They offer machines starting at 1 GB of memory
+		for $5 per month
+		(so that and the domain will cost you about £75 per year).
+		For many services,
+		including a web server,
+		that's ample,
+		in fact you could run several services on that one server.
+		The rest of this document assumes
+		that you will use a Digital Ocean server.
+		If not, the same general ideas should apply.
+		The important tasks are to create a server,
+		find out its IP addresses
+		and then go back to your DNS provider's website
+		and set up domain records for it.
+	</p>
+	
+	<p>
+		Digital Ocean have a customer referral scheme
+		which can save you a bit of money.
+		Find out about that
+		<a href="https://www.digitalocean.com/referral-program">here</a>.
+	</p>
+	<p>
+
+		If you are happy to be referred to Digital Ocean by me, then
+	follow
+		<a href='https://m.do.co/c/2ad0930c6d6b'>this link</a>
+		and create your account.
+	</p>
+	<p>
+	</p>
+	<p>
+	If you don't approve of that sort of thing
+	but you still want to use Digital Ocean service,
+	follow <a href="https://www.digitalocean.com/">this link</a>
+	which lets you open an account without using the
+	referral scheme.
+	</p>
+	<p>
+		Once you've opened your Digital Ocean account,
+		hit the Create button at the top of the page
+		and choose Droplets. 
+		You see a page with lots of options.
+		I suggest:
+		<ul>
+			<li>If you are familiar with Linux, use your favourite version.
+				If not, Debian is a good choice.
+			</li>
+			<li>The basic plan.</li>
+			<li>For the CPU option, Regular Intel with SSD (Solid State Disk).</li>
+			<li>The $5 per month option, which gives 1 GB of memory</li>
+			<li>The data Centre nearest to you.</li>
+			<li>IP V6</li>
+			<li>Authentication using SSH keys - see below</li>
+			<li>one droplet (the default)</li>
+			<li>your host name - example.com or whatever</li>
+			<li>optional but very useful: the $2 per month backup service</li>
+		</ul>
+	</p>
+	<p>
+		When you choose authentication by SSH keys,
+		the control page will
+		upload the public key file
+		id_rsa.pub from your computer.  
+		It's in the .ssh directory in your home directory.
+		You need to do this for your first droplet.
+		If you create another, it will use the same key by default.
+	</p>
+	<p>
+		If you choose the optional backup service,
+		your machine will be backed up once per week,
+		so in the event of a disaster,
+		you can recover quickly,
+		and lose only the last few days of changes.
+		For a website, that's not too bad.
+		(You are keeping change records, aren't you?)
+		but you may also want to arrange an alternative form of backup
+		that happens more frequently.
+	</p>
+	<p>
+		Your droplet
+		has a version 4 IP address and a version 6 IP address.
+		These
+		identify it on the Internet.
+		They act like a phone number - 
+		if you know one of the addresses,
+		you can access the droplet's services.
+		The DNS service acts like a phone book - 
+		it translates a readable name such as example.com 
+		into an IP address.
+	</p>
+	<p>
+		Go to the Droplets menu on the left of the user interface page,
+		click on the droplet name and the resulting details page
+		shows both addresses.
+		You'll need them later to set up the DNS records.  
+	</p>
+	<p>
+		It's easy to get some of the details wrong when you create your droplet.
+		If so,
+		you can just use the same web page to destroy it
+		and start again.
+		Don't continue until you have everything correct.
+	</p>
+	<h3>Setting up the DNS</h3>
+	<p>
+		Now you have a host machine ready to run your website
+		and you know its version 4 and version 6 IP addresses.
+		Go back to your DNS provider's website
+		and set up some name records.
+		This is probably the most difficult part.
+		There's nothing mind-taxing about it,
+		it's just messy.
+		All the providers' websites do the same thing,
+		but they all do it in different ways
+		and each has its own special wrinkles.
+		Don't expect to do this stage in a hurry
+		the first time.
+	</p>
+	<p>
+		You need to create:
+		<ul>
+			<li>an AAAA record for example.com containing the version 6 IP address of your droplet (the long address).</li>
+			<li>an A record for example.com containing the version 4 IP address</li>
+			<li>if you are creating a web server, a CNAME record called "www" (ie www.example.com),</li>
+		</ul>
+	</p>
+	<p>
+		When you're setting up the records,
+		there's a common convention that "@" refers to your main domain
+		"example.com"
+		and a name such as "www" refers to a subdomain called "www.example.com".
+		If you're using Namecheap you are forced follow that convention - 
+		in the setup pages on their web site "www" means "www.example.com,
+		To set up records for example.com itself, you need to call it "@".
+	</p>
+	<p>
+		Here is a screenshot of the Advanced DNS page on the namecheap website
+		showing the DNS records for my domain
+		accurateposition.org.
+		The domain name is at the top of the page.  In the records section,
+		"@" in the Host column represents the domain name.
+		"www" represents the subdomain www.accurateposition.org.
+		The A record defines the version 4 IP address of the server, 161.35.36.4,
+		the AAAA record defines the longer version 6 IP address
+		and the CNAME record defines www.accurateposition.org to be
+		another name for accurateposition.org.
+	</p>
+	<p>
+		The TTL column is the time to live.
+		When somebody visits this website for the first time,
+		their computer goes to the Namecheap
+		name server to find the IP address of the server that's hosting it and
+		remembers that address for the time to live period,
+		which may be hours or days.
+		After that time,
+		if they visit the website again,
+		then behind the scenes their computer will look up the address again
+		in case it's changed.
+		(If you change the IP address later,
+		for example because you move the site to a new hosting service,
+		there will be a cutover period during which some visitors will go to the old address
+		and some will go to the new,
+		so you need to keep both servers running for a few days
+		until the requests to the old one dry up.)
+	</p>
+
+	responsiveImage(domain, `the Namecheap control page for accurateposition.org')
+	<p>
+		When I said earlier that a domain name or subdomain name "refers"
+		to a server,
+		this is what I mean.
+		There's an DNS A record with that name
+		containing the version 4 IP address of the server
+		and a DNS AAAA record containing the version 6 IP address
+		OR there's a CNAME record with that name.
+		If a client computer wants to send a request to a named server,
+		the DNS system takes the name and gives back the IP addresses.
+		The IP addresses tell the client where to send the request.
+	</p>
+	<p>
+		If you are using Ionos:
+		<ul>
+		<li>
+		navigate from your home page to 
+		the page for your domain and
+		use the Adjust DNS Settings option at the bottom.
+		</li>
+		<li>
+		Ionos may have already set up
+		your domain to use their hosting service.
+		When you set up your own records,
+		you will get a warning that the service is being disabled.
+		That's OK.</li>
+		</ul>
+	</p>
+
+	<p>
+		Whichever DNS provider you use,
+		their user interface will probably be something like the above,
+		but with some interesting arbitrary differences.
+		They all have help desks that will advise you if you get into difficulties.
+	</p>
+	<p>
+		Back on your own computer,
+		check that the records are set up correctly.
+		You do this via a command window.
+		On Windows, use a Git Bash window.
+		On a Mac, use a terminal window.
+	</p>
+	<p>
+		In the command window, type:
+	</p>
+		<pre>
+	ping example.com
+		</pre>
+	<p>
+		Hit the Enter key to run the command.
+		If all is well
+		you will see something like:
+		<p><pre>
+	PING example.com (179.127.152.235) 56(84) bytes of data.
+	64 bytes from example.com (179.127.152.235): icmp_seq=1 ttl=50 time=11.9 ms
+	64 bytes from example.com (179.127.152.235): icmp_seq=2 ttl=50 time=9.42 ms
+	64 bytes from example.com (179.127.152.235): icmp_seq=3 ttl=50 time=10.1 ms
+	64 bytes from example.com (179.127.152.235): icmp_seq=4 ttl=50 time=10.3 ms
+	</pre>
+	<p>
+		You may have to hold down the control key and type a "c" to stop the
+		command.
+	</p>
+	<p>
+		Each line of output shows the version 4 IP address 
+		of your droplet.
+		If you get an error,
+		or the command hangs,
+		there's something wrong with the A or AAAA record that you set up.
+	</p>
+	<p>
+		 If you set up a subdomain, check that too:
+	<pre>
+		ping www.example.com
+	</pre>
+	<p>
+		Any problems with that, check the CNAME record.
+	</p>
+
+	<p>
+		You can also use the dig command
+		to check the setup:
+	</p>
+	<pre>
+    dig accurateposition.org
+    ;; communications error to 192.168.0.1#53: connection refused
+    ;; communications error to 192.168.0.1#53: connection refused
+    ;; communications error to 192.168.0.1#53: connection refused
+    
+    ; <<>> DiG 9.18.12-0ubuntu0.22.04.2-Ubuntu <<>> accurateposition.org
+    ;; global options: +cmd
+    ;; Got answer:
+    ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 969
+    ;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+    
+    ;; OPT PSEUDOSECTION:
+    ; EDNS: version: 0, flags:; udp: 512
+    ;; QUESTION SECTION:
+    ;accurateposition.org.		IN	A
+
+    ;; ANSWER SECTION:
+    accurateposition.org.	1799	IN	A	161.35.36.4
+
+    ;; Query time: 27 msec
+    ;; SERVER: 8.8.8.8#53(8.8.8.8) (UDP)
+    ;; WHEN: Thu Aug 10 14:54:14 BST 2023
+    ;; MSG SIZE  rcvd: 65
+	</pre>
+
+	<p>
+	The first few lines are error messages.  
+	The IP address 192.168.0.1 is my broadband modem.
+	Dig is expecting
+	it to act as a DNS server.
+	Some do, some don't,  mine doesn't.
+	When that failed a couple of times,
+	dig tried one of the public
+	DNS servers and got some results.
+	The Answer Section shows that there is an A record 
+	for my server and gives the IP address.
+	</p>
+	<h3>Connecting to Your Remote Machine</h3>
+	<p>
+		Once you've sorted out the DNS records, 
+		you can log into your droplet.
+		Log in from a command window.
+	</p>
+	<p>
+		On a Mac:
+	</p>
+		<pre>
+	ssh root@example.com
+		</pre>
+	<p>
+		The ssh command rummages through the .ssh directory,
+		finds the key file
+		and connects to the server as the root (admin) user.
+	</p>
+	<p>
+		If your private key is not called id_rsa, you may have to help ssh along a bit:
+	</p>
+		<pre>
+    ssh -i ~/.ssh/id_rsa_root root@example.com
+		</pre>
+	<p>
+		The Windows version of ssh uses the key <b>id_rsa</b>
+		unless you tell it otherwise.
+		On a Mac or a Linux machine,
+		ssh will try the first five keys that it finds in
+		the .ssh directory
+		and then give up.
+		The -i option forces it to use the named private key.
+		("~" means your home directory).
+	</p>
+	<p>
+		When you set up your key file
+		you protected it with a password.
+		You have to supply that to continue.
+		The password is only used locally,
+		it's not sent across the network.
+		</p>
+	<p>
+		The first time you log in you will get this scary message:
+	</p>
+	<p>
+		<pre>
+	The authenticity of host 'example.com (179.138.177.235)' can't be established.
+	ECDSA key fingerprint is SHA256:/FljgxBjsN2XYXWfF6ab6BnjrLY64+yXoiyIJZiQJac.
+	Are you sure you want to continue connecting (yes/no/[fingerprint])?
+		</pre>
+	</p>
+	<p>
+		Answer yes.
+	</p>
+	<p>
+		So you've logged in to your server.
+		What's to stop somebody else logging in?
+	</p>
+	<p>
+		You're logged into the remote machine as a user called "root" 
+		(the equivalent of the admin user on Windows).
+		When the Digital Ocean system set up the server,
+		it created a directory
+		called ".ssh" in the root user's home directory. 
+		In there is a file called <b>authorized_keys</b>
+		(American spelling).
+		You can display the contents like so:
+	</p>
+	<p>
+		<pre>
+	cat .ssh/authorized_keys
+	ssh-rsa AAAAB3NzaC1yc2EAAAADAQABZGHBAQDESnHZ02ZJooRGGFSz9XV1aqJq6BkNpadxf7eHi2hLOGEUdxWoC/td7Hhs42gUC8f7EzPpCbYOEaS0b4vwA53m2bkx9+FmkqpJxX2l8QJ2QYNcjrbW2CgSIBS3gIKreBPxVhTd5Ue+ZZJYoLLJcCWGNohwtkaxOFpBCI0hgkTtA658YCCP1Ps2EGjmabXkmktm2wx41x1ZzvUnDmSJxPg1YuKCHpTjtvB6AnhnJYAJvi/QHNPpDfOlMMbH3JJ4aLfuyyXyQlGDIKHxcM4f7f2SdZIp74lcopi62mcDmHccHM0doF13B9QYLyz15VkMJoPVBfNNjeaFUSNBAPjFP+09
+		</pre>
+	</p>
+		<p>
+			The file contains one long line, a public key.
+			The authorized_keys file can contain many keys, one per line.
+		</p>
+	<p>
+		That key matches the contents of the public key file
+		<b>id_rsa.pub</b> on your local computer.
+		So, when you try to connect,
+		your computer and the server run an authentication using a challenge
+		and the server
+		knows that it's you.
+	</p>
+
+	<p>
+		(To be pedantic,
+		the droplet doesn't know that it's you connecting.
+		It knows that somebody opened a password-protected account with Digital Ocean
+		and supplied a valid 
+		credit card to pay for droplet rental.
+		It knows that somebody then logged into that account,
+		created a droplet and supplied a public key.
+		They then connected to the droplet using the matching private key.
+	</p>
+	<p>
+		The root account on your droplet doesn't have a password,
+		so it's not possible to log in that way.
+		The only way to log in is
+		to have a private key in the .ssh directory in your home directory
+		on your local computer that matches one of the public keys
+		in root's authorized_keys file.
+	</p>
+	<p>
+		Having only one person able to 
+		control a computer which is vital to your organisation is obviously
+		not a great idea.
+		The key mechanism allows you to allow other trusted people in.
+		They create their own key pair on their computer
+		and send you the contents of their public key,
+		which is one long line.
+		You log into the droplet and add that line to the authorized_keys file,
+		so it now contains two public keys.
+		Whoever has a matching private key can log in as root.
+	</p>
+	<p>
+		In the section about creating your SSH key I claimed that using a password
+		to identify yoursef is a bad idea.
+		Now for the proof.
+		On your droplet, there's a file called auth.log which contains
+		a record of login attempts.
+		You can see the most recent entries using the <b>tail</b> command like so:
+	</p>
+	<p>
+		<pre>
+    tail -100 /var/log/auth.log
+
+    Aug 29 09:31:31 example.com sshd[24565]: Disconnected from authenticating user root 122.195.200.148 port 14902 [preauth]
+    Aug 29 09:31:36 example.com sshd[24567]: Received disconnect from 222.186.15.101 port 58740:11:  [preauth]
+    Aug 29 09:31:36 example.com sshd[24567]: Disconnected from authenticating user root 222.186.15.101 port 58740 [preauth]
+    Aug 29 09:31:37 example.com sshd[24569]: Received disconnect from 222.186.42.117 port 51976:11:  [preauth]
+    Aug 29 09:31:37 example.com sshd[24569]: Disconnected from authenticating user root 222.186.42.117 port 51976 [preauth]
+    Aug 29 09:32:06 example.com sshd[24571]: Disconnected from invalid user rabbitmq from 180.240.229.254 port 40846
+    Aug 29 09:32:07 example.com sshd[24571]: Received disconnect from 180.240.229.254 port 40846:11: Bye Bye [preauth]
+    Aug 29 09:32:07 example.com sshd[24571]: Disconnected from invalid user rabbitmq 180.240.229.254 port 40846 [preauth]
+    Aug 29 09:35:30 example.com sshd[24576]: Received disconnect from 122.195.200.148 port 42495:11:  [preauth]
+    Aug 29 09:35:30 example.com sshd[24576]: Disconnected from authenticating user root 122.195.200.148 port 42495 [preauth]
+    Aug 29 09:38:31 example.com sshd[24578]: Received disconnect from 36.156.24.43 port 51260:11:  [preauth]
+    Aug 29 09:38:31 example.com sshd[24578]: Disconnected from authenticating user root 36.156.24.43 port 51260 [preauth]
+    Aug 29 09:47:41 example.com sshd[24582]: Received disconnect from 183.131.82.99 port 17573:11:  [preauth]
+    Aug 29 09:47:41 example.com sshd[24582]: Disconnected from authenticating user root 183.131.82.99 port 17573 [preauth]
+    Aug 29 09:52:41 example.com sshd[24586]: Received disconnect from 222.186.30.111 port 48306:11:  [preauth]
+		</pre>
+	</p>
+	<p>
+		Your server is under attack!
+		Every few seconds somebody is attempting to log in
+		by guessing a user name and password.
+	</p>
+	<p>
+		DNS records are public - they have to be - and these attacks started as soon
+		as you created the A record announcing the existence of your machine.
+		There's an automatic process running somewhere,
+		probably several of them,
+		trying all the time to break into your server.
+		They guess likely user names and then guess passwords,
+		starting with the obvious choices that lots of people are known to use - 
+		"password", "passw0rd", "secret123" and so on.
+		If that doesn't work, they use brute force,
+		trying all combinations of characters, one by one.
+		However complicated you make your password,
+		eventually one of these password guessers will succeed
+		and the hacker running it can log in.
+	</p>
+	</p> 
+		Once they are into the server,
+		they will take it over.
+		If you're lucky, they will just delete all your files,
+		or they might encrypt them and charge you 
+		a ransom to decrypt them.
+		(Whether they get round to actually decrypting them is another matter.)
+		Along the way, they may also harvest all the email addresses
+		in incoming and outgoing mail,
+		and sell them to other scammers.
+		They might use your machine 
+		to mine bitcoins,
+		so now it's working for them and not for you.
+		If you're very unlucky,
+		they can use it to store illegal material 
+		that they don't want on their own machine - terrorist manuals,
+		child pornography, or whatever.
+	</p>
+	<p>
+		Why doesn't somebody stop these people?
+		If you take a look at the list again,
+		each request comes from a different IP address,
+		so a different computer.
+		Whoever is doing this is using computers belonging to other people
+		that they have already broken into.
+		Whose computers are they using?
+		They belong to people who decided that they couldn't
+		be bothered to use SSH keys,
+		and used passwords instead.
+	</p>
+	<p>
+		You can't stop the hackers from trying to break in,
+		but you can block this route
+		by not using password authentication.
+	</p>
+
+include(sourceRoot/trailer.m4.html)

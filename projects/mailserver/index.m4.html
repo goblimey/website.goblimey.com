@@ -1,0 +1,476 @@
+include(sourceRoot/definitions.m4)
+define(pageTitle, `Mail server')
+include(sourceRoot/leader.m4.html)
+
+	<h2>A Mail Server for Small Organisations</h2>
+
+		<p>
+			This explanation assumes that you've already read and understood
+			<a href='/projects/webserver/index.html'>A web server for small organisations</a>.
+		</p>
+		<p>
+			Once again, whenever you see "example.com" below,
+			replace it with the name of your domain.
+		</p>
+
+		<h3>Ready-Made Mail Services</h3>
+
+		<p>
+			Once you have your own domain
+			you can set up some email addresses -
+			sales@example.com, support@example.com,
+			membership@example.com and so on.
+			That requires a mail server for your domain.
+		</p>
+		<p>
+			As we'll see below,
+			it's not difficult to build your own mail server,
+			but running one is a specialist business,
+			so it's worth getting somebody else to do it
+			if the price is right.
+		</p>
+		<p>
+			There are lots of ready-made services out there.
+			The cheapest I've found is
+			<a href="https://www.zoho.com/mail/">Zoho</a>.
+			They charge from 10 Pounds per year
+			per email address
+			and their system drives you through creating the necessary
+			DNS records that make it work.
+			(I use Zoho,
+			but I get no advantage from recommending them.)
+		</p>
+		<p>
+			Some people prefer to get a local IT service organisation
+			that offers help and support to provide their email service.
+			That's fine,
+			but they often use the Microsoft Exchange mail server software.
+			That costs them a hefty licence fee
+			so their service tends to be quite expensive.
+			My advice is to try one of the cheap services first.
+		</p>
+		<p>
+			Switching email providers is quick and easy,
+			just a change to your DNS records,
+			so you shouldn't put up with poor service from anybody.
+			You just need to leave both services running for a week or so
+			to let your user's computers catch up with the change.
+			During that period,
+			mail from one person will arrive on the old mail server
+			and mail from another will arrive on the new one.
+			Once mail stops arriving on the old server,
+			you can cancel that service.
+		</p>
+
+		<h3>Building Your Own Mail Server</h3>
+		<p>
+			The first thing to say 
+			is that I advise you to NOT do this.
+		</p>
+		<p>
+			Firstly, it's expensive,
+			and you can get quite a few email addresses from one of the cheap suppliers
+			for the same money.
+		</p>
+		<p>
+			Secondly, I have hard experience that says that
+			the major email services that your customers use (gmail etc)
+			are VERY SUSPICIOUS of new email servers popping up and sending out mail.
+			It's easy to get your mail server marked as a source of spam
+			and difficult to persuade the services (one by one) that it's not.
+			Once you're on their spam lists,
+			every email that you send out will be put in your customer's spam box
+			and they may or may not see it, presuming that they even know how.
+			Getting onto a spam list doesn't do your reputation any good either.
+		</p>
+		<p>
+			Thirdly,
+			the spammers are always coming up with new and interesting ways
+			to fool mail servers into accepting their junk
+			and the mail services are constantly changing the rules to counter them.
+			It's an arms race.
+			So, even if you get everything right now,
+			there's likely to be some new precautions
+			put in place in the future
+			and you will fall foul of them.
+			Keeping track of the rules is a specialist business,
+			best left to someone else.
+		</p>
+		<p>
+			Having said all that,
+			it helps to understand how a mail system work,
+			even if you use somebody else's,
+			so you may care to read on.
+		</p>
+		<p>
+			A mail server needs quite a lot of memory,
+			even if it doesn't have to handle very much traffic.
+			This is because,
+			when an email arrives,
+			the server needs to respond quickly.
+			To do that it has programs like virus scanners
+			running constantly,
+			all using memory.
+		</p>
+
+	<p>
+		So you need to run your mail server software on a dedicated machine
+		with at least 2GB of memory.
+		If you're using Digital Ocean, create a droplet using these options:
+		<ul>
+			<li>Same operating system as your web server.
+			</li>
+			<li>The basic plan.</li>
+			<li>For the CPU option, Regular Intel with SSD (Solid State Disk)</li>
+			<li>The $10 per month option, which gives 2 GB of memory.</li>
+			<li>The data Centre nearest to you.</li>
+			<li>IP V6</li>
+			<li>Authentication using SSH keys - see below</li>
+			<li>One droplet (the default)</li>
+			<li>Your host name - see below</li>
+			<li>The $2 per month backup service</li>
+		</ul>
+
+
+
+	</p>
+		<p>
+			If you choose the optional backup service,
+			your machine will be backed up once per week,
+			so in the event of a disaster,
+			you lose up to a week of emails.
+			Better than losing everything!
+			You can arrange more frequent backups via one of the many backup services,
+			but a weekly backup gives extra insurance against disaster.
+		</p>
+	<h3>The Domain Name</h3>
+	<p>
+		Back at your domain name service's control web page,
+		create a subdomain called mail (eg mail.example.com)
+		and set the version 4 and version 6 IP addresses to be those of your new droplet.
+		You need to create:
+		<ul>
+			<li>an AAAA record for mail.example.com containing the version 6 IP address (the long one) of your droplet</li>
+			<li>an A record for mail.example.com containing the version 4 IP address</li>
+			<li>(later on) an MX (mail exchange) record containing the name of your machine (mail.example.com or whatever).<b><i></i></b></li>
+		</ul>
+		As soon as you create the MX record,
+		any mail sent to your domain will be sent to this server
+		but at present there's no software to set up to deal with it.
+		</p>
+		<h3>Connecting</h3>
+		<p>
+		Start a new command window.
+		Don't log into the droplet yet, just type:
+		<p>
+			<code>
+				ping mail.example.com
+			</code>
+	</p>
+		<p>
+		Hit the Enter key to run the command.
+		</p>
+		<p>
+			The command runs on your local machine.
+			If all is well,
+			the first line of output will contain the version 4 IP address
+			of your droplet,
+			and that will be followed by a series of lines
+			saying "64 bytes from mail.example.com".
+			(You may have to hold down the control key and type a "c" to stop them.)
+			If you get an error,
+			or it hangs,
+			there's something wrong with the A or AAAA record that you set up.
+		</p>
+		<p>
+			If all is well, you can log into your droplet and start work.
+			Log in from your command window like so:
+		</p>
+		<p>
+<pre>
+	ssh root@mail.example.com
+</pre>
+	or, if necessary, tell it which key to use:
+<pre>
+	ssh -i ~/.ssh/id_rsa_root root@mail.example.com
+</pre>
+		</p>
+		<p>
+			The first time you do that, you will get this scary message:
+		</p>
+		<p>
+			<code>
+				The authenticity of host 'mail.example.com (178.128.167.235)' can't be established.
+				ECDSA key fingerprint is SHA256:/FljgxBjsN2XYXWfF6ab6BnjrLY64+yXoiyIJZiQJac.
+				Are you sure you want to continue connecting (yes/no/[fingerprint])?
+			</code>
+		</p>
+		<p>
+			Answer yes.
+		</p>
+		<p>
+			Now create an ordinary user for doing day to day work
+			(as explained in the web server page.)
+			I called my user mailhandler.
+		</p>
+
+		<h3>Creating a Digital Certificate</h3>
+	<p>
+		Now that the droplet responds to the right name,
+		you can create a digital certificate for it.
+		There's no web server running on this machine, so the sequence is a little different.
+		As the root user:
+
+<pre>
+	apt install certbot python3-certbot-apache
+
+	certbot -d mail.example.com --manual --preferred-challenges dns certonly
+</pre>
+		Cerbot asks you to create a TX DNS record called _acme-challenge
+		(underscore and then hyphen)
+		containing a long piece of magic text.
+		This is to prove that you control the domain.
+		At your DNS provider, do that.
+		If you're using Ionos, navigate to your mail subdomain
+		and create a TX record named "_acme-challenge.mail.@"
+		and fill in the bit of text that certbot is looking for.
+		The "@" is replaced by your domain name,
+		so that's a TX record called "_acme-challenge.mail.example.com".
+		(To copy the challenge text from the command window,
+		highlight the text, right click and choose Copy from the dropdown menu that appears.)
+	</p>
+		<p>
+		Once your TX record is ready,
+			hit enter in the command window.
+			If you got everything right,
+			it will create a certificate for this server,
+			represented by lots of files in the directory /etc/letsencrypt.
+		</p>
+		<p>
+			Your mail server will be run by the mailhandler user
+			and it needs to be able to read the information in the certificate files.
+			Currently they are owned by root and some are only readable by the owner.
+			So, we change the owner:
+			<pre>
+    chown -R mailhandler:mailhandler /etc/letsencrypt
+			</pre>
+		</p>
+		<p>
+		Ensure that all the ports used by the mail server are open in the firewall:
+		<pre>
+    iptables -A INPUT -p tcp --dport 25 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+    iptables -A OUTPUT -p tcp --sport 25 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+
+    iptables -A INPUT -p tcp --dport 143 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+    iptables -A OUTPUT -p tcp --sport 143 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+
+    iptables -A INPUT -p tcp --dport 465 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+    iptables -A OUTPUT -p tcp --sport 465 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+
+    iptables -A INPUT -p tcp --dport 587 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+    iptables -A OUTPUT -p tcp --sport 587 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+
+    iptables -A INPUT -p tcp --dport 993 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+    iptables -A OUTPUT -p tcp --sport 993 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+		</pre>
+		</p>
+<p>
+	Install the latest version of docker-compose.  The advice
+	<a href="https://docs.docker.com/compose/install/">here</a>
+	says to install it something like this:
+<pre>
+    curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" \
+		-o /usr/local/bin/docker-compose
+</pre>
+	(The version - 1.29.2 will change as time goes on.  See the web page.)
+	</p>
+
+		<h3>Setting up the Mail Server Software</h3>
+		<p>
+	Start another Git Bash window on your local machine and
+	log in to your droplet as your other user.  I called mine mailhandler, so that's:
+<pre>
+    ssh mailhandler@mail.example.com
+</pre>
+		The instructions for installing and running the mail server are
+			<a href="https://github.com/docker-mailserver/docker-mailserver">here</a>.
+			I suggest that you create a directory mailserver and install the software in there:
+<pre>
+    mkdir mailserver
+    cd mailserver
+</pre>
+and then do as the instructions say:
+<pre>
+    DMS_GITHUB_URL='https://raw.githubusercontent.com/docker-mailserver/docker-mailserver/master'
+    wget "${DMS_GITHUB_URL}/docker-compose.yml"
+    wget "${DMS_GITHUB_URL}/mailserver.env"
+    wget "${DMS_GITHUB_URL}/setup.sh"
+
+    chmod a+x ./setup.sh
+    ./setup.sh help
+</pre>
+		</p>
+		<p>
+			The beginning of the section "Starting for the first time" is a bit confusing.
+			I suggest you create your first user (&lt;user@domain&gt; with password &lt;password&gt; like so:
+<pre>
+    mkdir -p ${HOME}/mailserver/docker-data/dms/config
+
+    docker run --rm -v "${HOME}/mailserver/docker-data/dms/config/:/tmp/docker-mailserver/" \
+        docker.io/mailserver/docker-mailserver setup email add &lt;user@domain&gt; &lt;password&gt;
+</pre>
+			That creates a directory docker-data/dms/config to hold the configuration,
+			brings up the docker container and tells it to use the config directory.
+			It then shuts down, so you have to start it up agan when you've finished the setup (see below).
+			<p>
+			You need to create a special email address postmster@{yourdomain}.
+			It can be an alias of some other email address:
+			<pre>
+    ./setup.sh alias add postmaster@example.com &lt;anotheremailaddress&gt;
+			</pre>
+			The postmaster will receive emails about problems with the mail server.
+			</p>
+			<p>
+			Set up a DKIM record:
+			<pre>
+    ./setup.sh config dkim
+			</pre>
+		</p>
+		<p>
+		The instructions mention that you might set up a DNS TXT record for DKIM.
+		It turns out to be very important.
+		The spam detector systems around the world are always very suspicious of new mail servers
+		and if you don't set up a DKIM record,
+		your users will very quickly get blacklisted by gmail and other popular mail systems.
+		You just created a file containing the necessary text.
+		This command displays the contents:
+		<pre>
+    sudo cat docker-data/dms/config/opendkim/keys/example.com/mail.txt
+		</pre>
+		The file contains four lines and begins "mail._domainkey".  
+		Back at your DNS provider's control web page, create a TXT record
+		with that name containing the rest of the text, as described 
+		<a href="https://docker-mailserver.github.io/docker-mailserver/edge/config/best-practices/dkim/">here</a>.
+		</p>
+		<p>
+		You probably need to read the section entitled Configuration Using a Web Interface.
+		When it says "you need to concatenate the values in the TXT record",
+		that simply means join them together into one long line.
+		</p>
+		<p>
+		There's a brief explanation of DKIM 
+		<a href="https://mxtoolbox.com/dmarc/dkim/setup/how-to-setup-dkim">here</a>.
+		</p>
+		<p>
+			After that, the instruction for the mail server are clearer.
+			To create another email address, make sure you are in the mailserver directory and run this command:
+<pre>
+    ./setup.sh email add anotheruser@domain password
+</pre>
+		</p>
+		<p>
+		To configure the email client software on their own computer,
+		each user needs to know their account name
+		(which is their whole email address)
+		and their password.
+		</p>
+		<p>
+		Now you can start your mail server up and leave it running.
+		To do that you need to create a 
+		docker-compose.yml file.
+		This one should work.
+		(Replace example.com with your domain name!)
+		<pre>
+services:
+  mailserver:
+    image: docker.io/mailserver/docker-mailserver:latest
+    container_name: mailserver
+    # If the FQDN for your mail-server is only two labels (eg: example.com),
+    # you can assign this entirely to `hostname` and remove `domainname`.
+    hostname: mail
+    domainname: example.com	# REPLACE THIS WITH YOUR DOMAIN NAME!!!!!
+    env_file: mailserver.env
+    # More information about the mail-server ports:
+    # https://docker-mailserver.github.io/docker-mailserver/edge/config/security/understanding-the-ports/
+    # To avoid conflicts with yaml base-60 float, DO NOT remove the quotation marks.
+    ports:
+      - "25:25"    # SMTP  (explicit TLS => STARTTLS)
+      - "143:143"  # IMAP4 (explicit TLS => STARTTLS)
+      - "465:465"  # ESMTP (implicit TLS)
+      - "587:587"  # ESMTP (explicit TLS => STARTTLS)
+      - "993:993"  # IMAP4 (implicit TLS)
+    volumes:
+      - ./docker-data/dms/mail-data/:/var/mail/
+      - ./docker-data/dms/mail-state/:/var/mail-state/
+      - ./docker-data/dms/mail-logs/:/var/log/mail/
+      - ./docker-data/dms/config/:/tmp/docker-mailserver/
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/letsencrypt/:/etc/letsencrypt/	# Allow the docker image to see the LetsEncrypt certificates
+    environment:
+      - ENABLE_SPAMASSASSIN=1
+      - SPAMASSASSIN_SPAM_TO_INBOX=1
+      - ENABLE_CLAMAV=1
+      - ENABLE_FAIL2BAN=0			# Disable fail2ban initially.
+      - ENABLE_POSTGREY=1
+      - ENABLE_SASLAUTHD=0
+      - ONE_DIR=1
+      - DMS_DEBUG=0
+      - SSL_TYPE=letsencrypt			# Use LetsEncrypt certificates.
+    restart: always
+    stop_grace_period: 1m
+    cap_add:
+      - NET_ADMIN
+      - SYS_PTRACE
+		</pre>
+		The spaces at the start of each line matter.
+		</p>
+		<p>
+		Start the server running like so:
+		<pre>
+    docker-compose up -d mailserver
+		</pre>
+		You can check that it's running using docker ps:
+		<pre>
+    docker ps
+    CONTAINER ID   IMAGE                                 COMMAND                  CREATED          STATUS          PORTS                                                                                                                                                                                                                       NAMES
+    88cd818619aa   mailserver/docker-mailserver:latest   "/usr/bin/dumb-init …"   49 minutes ago   Up 49 minutes   0.0.0.0:25->25/tcp, :::25->25/tcp, 0.0.0.0:143->143/tcp, :::143->143/tcp, 0.0.0.0:465->465/tcp, :::465->465/tcp, 0.0.0.0:587->587/tcp, :::587->587/tcp, 110/tcp, 995/tcp, 0.0.0.0:993->993/tcp, :::993->993/tcp, 4190/tcp   mailserver
+		</pre>
+		If you need to bring it down again later, do this (while in the mailserver directory):
+		<pre>
+    docker-compose down
+		</pre>
+                </p>
+		<p>
+			Once your mail server is set up and running,
+			go back at your DNS provider's control web page and
+			set up a Mail eXchange (MX) record pointing to it -
+			for the domain example.com, the record would contain "mail.example.com".
+			Mail will now start flowing in,
+			including all those vitally important notes from Nigerian
+			potentates anxious to give you money.
+		</p>
+		<p>
+		With that configuration
+		the fail2ban service is turned off.
+		It guards against hackers trying to guess user names and passwords.
+		Unfortunately,
+		while your real users are trying to figure out how to configure their mail clients to connect
+		to the server,
+		they are likely to make mistakes,
+		then fail2ban will get suspicious and ban them.
+		Leave it switched off at first,
+		get your users configured,
+		then turn it on.
+		To do that,
+		edit docker-compose.yml and set the ENABLEFAIL2BAN line to:
+		<pre>
+      - ENABLE_FAIL2BAN=1
+		</pre>
+		"Bounce" the mail server software -
+		bring it down
+		then start it up again as described above.
+		On the way up it reads the new version of the configuration file and runs the
+		fail2ban service.
+		</p>
+
+include(sourceRoot/trailer.m4.html)

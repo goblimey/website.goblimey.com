@@ -1,0 +1,1108 @@
+include(sourceRoot/definitions.m4)
+define(pageTitle, `Internet Services')
+include(sourceRoot/leader.m4.html)
+
+	<h2>Internet Services for Small Organisations</h2>
+	<p>
+		This document is aimed at small organisation such as local societies
+		and small companies,
+		and explains
+		how to
+		set up your own Internet servers.
+	</p>
+	<p>
+		A <b>server</b> is just a computer connected to the Internet
+		with a published name.
+		Internet services run on servers.
+		Your organisation may be already using Internet servers,
+		running on somebody else's infrastructure.
+		Companies that build websites often provide the servers that run them.
+		This tends to be expensive and restrictive,
+		and if the website company goes out of business,
+		potentially disastrous.
+	<p>
+		It's quite cheap these days to run your own servers
+		on the Internet,
+		and fairly easy.
+		There's lots of help out there telling you how to do it.
+		The problem is that the help is scattered across a lot of places
+		and each document assumes lots of specialist knowledge.
+		This document aims to show the whole process from start to finish.
+	</p>
+
+	<p>
+		I mention a number of companies here, notably Ionos, Namecheap and Digital Ocean. 
+		My only commercial relationship with them is as a customer.
+		If you follow the advice here and buy their services,
+		I gain no benefit.
+		Other similar services are available elsewhere
+		and you can do your own research to find them.
+	</p>
+	<p>
+		As you'll see pretty soon,
+		your server runs an operating system called Linux.
+		If you've not used Linux before,
+		I can offer some help.
+		Once you've created your server
+		you will find some free training software 
+		On my github page
+		<a href='https://github.com/goblimey/learn-unix'>here</a>.
+	</p>
+	<p>
+		Nerds like me distinguish between <b>The Internet</b>
+		which is a network of computers offering services of all sorts,
+		and <b>The World-Wide Web</b>
+		which is all of the web servers
+		connected to that network.
+		To put that another way,
+		the Internet has web servers connected to it,
+		but it has lots of other stuff as well -
+		mail servers for example.
+	</p>
+	<h3>The Domain Name Service</h3>
+	<p>
+		You need to know a little about
+		the Domain Name Service (DNS),
+		which gives names to computers on the Internet.
+		When you send email to john.smith@gmail.com,
+		the DNS system tells your email client which email server to send it to.
+	</p>
+	<p>
+		There's some more jargon.
+		A <b>client</b> is a piece of software (a program)
+		running on the computer on your desk or in your hand (your <b>local machine</b>)
+		that connects across a network to a server to access whatever service
+		that server offers.
+		A web browser is a client,
+		because it fetches web pages from web servers.
+		</p>
+		<p>
+		If your local machine is a smartphone,
+		the client is called an <b>app</b> 
+		(short for application software)
+		That's just a program by another name. 
+	</p>
+	<p>
+		Strictly, you don't buy a domain,
+		you rent it via one of many DNS providers.
+		The sense in which you own it
+		is that
+		as long as you keep paying the annual renewal fees,
+		nobody can take it from you.
+		Also
+		you can sell it to somebody else.
+		Essentially you have a lease entitling you to use the domain,
+		you have first refusal when it's due for renewal
+		and you can sell it to somebody else.
+		If you don't pay the rent,
+		you lose the lease.
+	</p>
+	
+	<p>
+		Only one organisation can use a particular domain.
+		Ideally you want a short domain name that matches your organisation's name.
+		If you are setting up a new organisation,
+		I suggest finding a suitable domain name that nobody has already bought,
+		then naming the organisation after it.
+		Buying a new domain is cheap - 
+		$20 per year or less.
+		Back in the 1990's, a few people made a lot of money by buying
+		domains and then selling them on.
+		As a result
+		if you choose any word in the dictionaries of several languages
+		and add ".com",
+		that domain
+		has already been bought by somebody,
+		and they will try to charge you a lot of money for it.
+		This is why we have websites with names like zettle.com and shopify.com - 
+		nobody else had thought of buying those names.
+	</p>
+	
+	<p>
+		For a profit-making business, it's best to own a .com domain.
+		A non-profit organisation can use a .org domain.
+		Those are the main "international" domains.
+		You have as much right to use them as anybody else.
+		There are also equivalents for each country -
+		here in the UK we have .co.uk and .org.uk domains. 
+		The problem with those is, people easily
+		get confused.
+		If you own the domain birdwatchers.org.uk
+		and somebody else owns birdwatchers.org
+		or birdwatcher.com,
+		they will probably receive emails meant for you
+		but not vice versa,
+		Owning a .com or .org domains is always better.
+		For similar reasons,
+		if you buy a .org domain,
+		it's best if you can buy the .com domain as well,
+		if only to stop anybody else using it.
+	</p>
+	<p>
+		You have to be creative and flexible when choosing a domain name.
+		Don't do it in a hurry.
+		I wanted to set up an organisation called Accurate Location,
+		so I wanted to buy the domains accuratelocation.org and
+		accuratelocation.com.
+		Somebody else had already bought them
+		but accurateposition.org and accurateposition.com
+		were available.
+		I bought them and set up an organisation called Accurate Position.
+	</p>
+	<p>
+		To find out if a domain is available,
+		go to your DNS provider's website and try to buy it.
+		The first thing it does is to tell you if it's already taken
+		and if it is,
+		whether it's for sale.
+		(If it's for sale and you can't easily see the price,
+		this is probably the time to try another choice of name.)
+	</p>
+	<p>
+		Most DNS providers also provide hosting.
+		If you follow the advice here,
+		you will provide your own hosting.
+		You need a DNS provider
+		that allows you to do that.
+		If you've already bought your domain and your DNS provider
+		only allows you to use their hosting,
+		you can transfer the domain to another provider for a small fee.
+	</p>
+	<p>
+		Throughout the rest of
+		this document, I will assume that you own the domain <b>example.com</b>
+		and you have full control over it.
+		Wherever you see "example.com" below,
+		replace that with the name of your domain.
+	</p>
+	<p>
+		Domain names are hierarchical.
+		"com", "org" and "uk" are top-level domains.
+		The domain example.com is a sub-domain of com.
+		If you own it
+		you can create further subdomains www.example.com,
+		mail.example.com, and so on.
+		There are some conventions
+		but the subdomain names are your choice.
+	</p>
+	<p>
+		Each of your servers should have at least one name,
+		but it can have more - one server could be called
+		example.com, www.example.com and so on. 
+	</p>
+	<p>
+		There are two common situations.
+		One is that you are starting from scratch.
+		You want to buy a domain and create a web server
+		to house your website.
+		You also want to send and receive email,
+		so you need a mail server.
+		To achieve all that, you buy the domain example.com (or whatever)
+		and create subdomains www.example.com and mail.example.com.
+		You call the machine running your web service
+		"example.com" and "www.example.com". 
+		You call the machine running your mail service "mail.example.com".
+		(You can call them whatever you like
+		as long as the name ends with ".example.com".
+		Those are the common conventions.)
+	</p>
+	<p>
+		The other common situation is that 
+		your web design company has bought the domain name for you
+		and they control the domain records.
+		This is VERY BAD
+		because your entire public image depends on some other organisation
+		staying in business and you have no control over them.
+		You should get an account with a domain name service
+		and demand that the supplier releases the domain into your control.
+		It's safe to let them provide hosting for your website,
+		but only once you have control of the domain records.
+	</p>
+	<h3>Hosting</h3>
+	<p>
+		A hosting service provides computers on the Internet for rent
+		on which you can run your web server, email server or whatever.
+		(Another potential confusion:
+		the word <b>server</b> can mean a computer offering a service
+		or the piece of software running on the computer
+		which provides that service.
+		Once you understand that,
+		it's usually obvious which is meant from the context.)
+	</p>
+	<p>
+		Most DNS providers offer hosting,
+		but the facilities are usually limited.
+		This document assumes that you are going to rent your own 
+		"cloud" computer,
+		with which you can do anything you like.
+	</p>
+	<p>
+		Another thing worth knowing is that
+		these computers that you are going to rent
+		are not real.
+		As you will see, you can magic them into existence
+		in a minute or so and remove them again just as quickly,
+		which is a clue.
+		There isn't a little man somewhere running around
+		setting up and tearing down equipment for you.
+		What's really going on is that the hosting provider
+		has rooms full of very big computers 
+		which are pretending to be lots of smaller computers.
+		What you are renting is a <b>virtual server</b>
+		(or a <b>cloud server</b>,
+		which is the same thing but sounds more impressive).
+	</p>
+		Lots of companies offer virtual servers,
+		including the mighty Amazon.
+		Digital Ocean offer a service which is especially suited
+		to small organisations,
+		and that's the one I use.
+		They call their virtual computers "droplets".
+		You can rent a droplet for as little as $5 per month
+		and run a small website on it.
+	<p>
+		Just to ram an important difference home:
+		your hosting service provides a rented
+		virtual computer (a <b>machine</b>) connected to the Internet
+		that you can use to provide services.
+		Your DNS service tells the rest of the world
+		where to find the machine that you're renting,
+		so that they can access that service.
+	</p>
+	<h3>SSH Authentication Keys</h3>
+	<p>
+		To access your machine securely, you need ssh keys.
+		These are just two plain text files stored on your local machine,
+		one public and one private.
+		They're called keys because your droplet will be locked
+		and only somebody with the keys can get in.
+		You need to set up some keys before you create your droplet.
+		I believe that you can set up keys on a smartphone,
+		but I never have.
+		Here I assume that you are using a laptop or desktop computer.
+	</p>
+	<p>
+		If you use a Mac
+		<a href='https://docs.joyent.com/public-cloud/getting-started/ssh-keys/generating-an-ssh-key-manually/manually-generating-your-ssh-key-in-mac-os-x'>
+			see this document</a>.
+		If you use Windows, you will need to install some software
+		as explained
+		<a href='https://docs.joyent.com/public-cloud/getting-started/ssh-keys/generating-an-ssh-key-manually/manually-generating-your-ssh-key-in-windows'>
+			here</a>.
+		The Windows document suggests two options, PuTTY and Git Bash.
+		I suggest you use the Git Bash option,
+		and elsewhere in this document,
+		I will assume that you have.
+	</p>
+	<p>
+		If you take the defaults when you create your keys,
+		they will be created in a directory called <b>.ssh</b> 
+		in your home directory.
+		You will produce files in there called
+		<b>id_rsa</b> (your private key)
+		and <b>id_rsa.pub</b> (your public key).
+		You need to keep the contents of the private key file to yourself,
+		but it's safe to let anyone see the contents of your public key.
+		That's the essential idea - nobody else
+		knows what's in your private key file
+		but anybody can know what's in your public key file.
+		The keys are password protected.
+		You need to supply the password whenever you use them.
+	</p>
+	<p>
+		You can choose another name when you create your keys. 
+		For reasons that will become clear later,
+		I suggest that you create two sets of keys.
+		Use the default name for the first pair
+		and for the second pair, 
+		set the name to <b>id_rsa_root</b>.
+		You will end up with four key files <b>id_rsa</b>,
+		<b>id_rsa.pub</b>, <b>id_rsa_root</b> and <b>id_rsa_root.pub</b>.
+	</p>
+	<p>
+		As you will see, you will need these keys when you create your server.
+	</p>
+	
+	<p>	
+		The files are actually encryption keys.
+		If you take a piece of text and encrypt it using your private key,
+		somebody else can decrypt it if they have the matching public key.
+	</p>
+	<p>
+		You can use the keys to verify your identity.
+		It goes something like this:
+		We meet up and you give me a copy of your public key file.
+		We agree a piece of text,
+		say "Abracadabra".
+		This text is called <b>the challenge</b>.
+	</p>
+	<p>
+		Later, you want to send me an email
+		which is guaranteed to come from you and not some imposter.
+		You encrypt the agreed challenge with your private key and put the result
+		in the email.
+		The encrypted version is a pile of unreadable junk.
+		If I can decrypt that unreadable junk
+		with your public key and the result is "Abracadabra",
+		then I know that it was you that sent the email.
+		Only your private key can produce the unreadable junk that,
+		when decrypted, produces the challenge.
+	</p>
+	<p>
+		Strictly, I know that it was somebody 
+		who has the private key that matches 
+		the public key that you gave me,
+		which is why you need to keep the contents of
+		your private key to yourself.
+		Oh, and we had to meet up beforehand
+		so that I know that it was really you that gave me the public key.
+		That's called "the key distribution problem."
+	</p>
+	<p>
+		The same principle can be used to log in from the computer on your desk
+		(the <b>local machine</b>)
+		across the Internet
+		to the computer you are renting from the hosting company
+		(the <b>remote machine</b>).
+		As we will see later,
+		when you set up your remote machine,
+		you supply your public key.
+		It goes something likje this:
+		when you try to log into it from your local computer,
+		behind the scenes
+		the two ends agree a challenge.
+		Your local computer encrypts the challenge
+		using your private key and sends the result
+		across the Internet to the remote machine.
+		The remote machine decrypts what it receives and 
+		checks that the decrypted version matches the agreed challenge.
+		If so, it lets you log in. 
+		You still have to supply a password to open your key,
+		but it's not sent across the network.
+		The Internet is public medium
+		and various people could be monitoring the traffic,
+		but they can't use what they can see to masquerade as you
+		and log in to your server.
+	</p>
+	
+	<p>
+		As some people read this section, I can hear them say
+		"This all sounds very complicated.  Why can't I just use a password?"
+		We'll see later why that would be a very bad idea.
+	</p>
+	
+	<h3>Buying Your Domain</h3>
+	<p>
+		I use a DNS service called <a href='https://ionos.com'>ionos.com</a>,
+		which is very easy to use but a little more expensive than some.
+		I've also used <a href='https://www.namecheap.com/'>namecheap.com</a>,
+		which is cheaper,
+		but has a user interface that's a little more cranky.
+		Many other DNS services are available.
+	</p>
+	<p>
+		(One thing about the Ionos service is cranky:
+		if you go to the website www.ionos.com
+		to buy a domain
+		and their system detects that
+		you are not in the USA,
+		it will redirect your web browser to a regional website,
+		in my case the UK site www.ionos.co.uk.
+		Confusingly,
+		the regional website holds your account,
+		and www.ionos.com knows nothing about it.
+		If you go back later to www.ionos.com and try to log in
+		using the user name and password that you set up
+		on your first visit,
+		it won't recognise you.
+		You have to go to your regional site
+		and log in to that.)
+	<p>
+		Fees for domains vary between DNS providers.
+		Beware of "special offers" on new domains.
+		Check the renewal fees before buying.
+		It may be cheaper in the long run to go elsewhere.
+	</p>
+	<p>
+		If you don't already own your domain,
+		choose a provider and buy it now.
+	</p>
+	</p>
+		<p>
+		Once you've figured that out and logged in,
+		the Ionos user interface is fairly straightforward.
+	</p>
+	
+	<h3>Setting up Your Host Machine</h3>
+	<p>
+		Your host machine is a rented virtual computer somewhere in the cloud.
+		Many companies offer them.
+		If you want to do research,
+		type "cheap hosting services" into a search engine.
+
+	</p>
+	<p>
+		I've found the Digital Ocean service 
+		fairly cost effective for small organisations.
+		They offer machines starting at 1 GB of memory.
+		For many services,
+		including a web server,
+		that's ample,
+		in fact you could run several services on that one server.
+		For the rest of this document
+		I'm assuming that you will use that service.
+		If not, the same general ideas should apply.
+		(The key thing is to create a server,
+		find out its IP addresses
+		and then go back to your DNS provider's website
+		and set up your domain records.)
+	</p>
+	
+	<p>
+		Digital Ocean have a customer referral scheme
+		which can save you a bit of money.
+		Find out about that
+		<a href="https://www.digitalocean.com/referral-program">here</a>.
+	</p>
+	<p>
+
+		If you are happy to be referred to Digital Ocean by me, then
+	follow
+		<a href='https://m.do.co/c/2ad0930c6d6b'>this link</a>
+		and create your account.
+	</p>
+	<p>
+	</p>
+	<p>
+	If you don't approve of that sort of thing
+	but you still want to use Digital Ocean service,
+	follow <a href="https://www.digitalocean.com/">this link</a>
+	which lets you open an account without using the
+	referral scheme.
+	</p>
+	<p>
+		Once you've opened your Digital Ocean account,
+		hit the Create button at the top of the page
+		and choose Droplets. 
+		You see a page with lots of options.
+		I suggest:
+		<ul>
+			<li>If you are familiar with Linux, use your favourite version.
+				If not, Debian is a good choice.
+			</li>
+			<li>The basic plan.</li>
+			<li>For the CPU option, Regular Intel with SSD (Solid State Disk).</li>
+			<li>The $5 per month option, which gives 1 GB of memory OR</li>
+			<li>the $10 per month option, which gives 2 GB of memory.</li>
+			<li>The data Centre nearest to you.</li>
+			<li>IP V6</li>
+			<li>Authentication using SSH keys - see below</li>
+			<li>one droplet (the default)</li>
+			<li>your host name - example.com or whatever</li>
+			<li>optional but very useful: the $2 per month backup service</li>
+		</ul>
+	</p>
+	<p>
+		When you choose authentication by SSH keys,
+		you will need to upload your public key file
+		id_rsa_root.pub from your computer.  
+		It's in the .ssh directory in your home directory.
+		You need to do this for your first droplet.
+		If you create another, it will use the same key by default.
+	</p>
+	<p>
+		For a web server,
+		set the hostname to your domain name - "example.com" or whatever.
+	</p>
+	<p>
+		If you choose the optional backup service,
+		your machine will be backed up once per week,
+		so in the event of a disaster,
+		you can recover quickly,
+		and lose only the last few days of changes.
+		For a website, that's not too bad.
+		(You are keeping change records, aren't you?)
+		but you may also want to arrange an alternative form of backup
+		that happens more frequently.
+	</p>
+	<p>
+		Your droplet
+		has a version 4 IP address and a version 6 IP address.
+		These
+		identify it on the Internet.
+		They act like a phone number - 
+		if you know one of the addresses,
+		you can access the droplet's services.
+		The DNS service acts like a phone book - 
+		it translates a readable name such as example.com 
+		into an IP address.
+	</p>
+	<p>
+		Go to the Droplets menu on the left of the user interface page,
+		click on the droplet name and the resulting details page
+		shows both addresses.
+		You'll need them later to set up the DNS records.  
+	</p>
+	<p>
+		It's easy to get some of the details wrong when you create your droplet.
+		If so,
+		you can just use the same web page to destroy it
+		and start again.
+		Don't continue until you have everything correct.
+	</p>
+	<h3>Setting up the DNS</h3>
+	<p>
+		Now you have a host machine ready to run your website
+		and you know its version 4 and version 6 IP addresses.
+		Go back to your DNS provider's website
+		and set up some name records.
+		This is probably the most difficult part.
+		There's nothing mind-taxing about it,
+		it's just messy.
+		All the providers' websites do the same thing,
+		but they all do it in different ways
+		and each has its own special wrinkles.
+		Don't expect to do this stage in a hurry
+		the first time.
+	</p>
+	<p>
+		You need to create:
+		<ul>
+			<li>an AAAA record for example.com containing the version 6 IP address of your droplet (the long address).</li>
+			<li>an A record for example.com containing the version 4 IP address</li>
+			<li>if you are creating a web server, a CNAME record called "www" (ie www.example.com),</li>
+		</ul>
+	</p>
+	<p>
+		When you're setting up the records,
+		there's a common convention that "@" refers to your main domain
+		"example.com"
+		and a name such as "www" refers to a subdomain called "www.example.com".
+		If you're using Namecheap you are forced follow that convention - 
+		in the setup pages on their web site "www" means "www.example.com,
+		To set up records for example.com itself, you need to call it "@".
+	</p>
+	<p>
+		Here is a screenshot of the Advanced DNS page on the namecheap website
+		showing the DNS records for my domain
+		accurateposition.org.
+		The domain name is at the top of the page.  In the records section,
+		"@" in the Host column represents the domain name.
+		"www" represents the subdomain www.accurateposition.org.
+		The A record defines the version 4 IP address of the server, 161.35.36.4,
+		the AAAA record defines the longer version 6 IP address
+		and the CNAME record defines www.accurateposition.org to be
+		another name for accurateposition.org.
+		(The IP addresses are decided by your hosting company,
+		as shown later.)
+	</p>
+	<p>
+		The TTL column is the time to live.
+		When somebody visits this website for the first time,
+		their computer goes to the Namecheap
+		name server to find the IP address of the server that's hosting it and
+		it remembers that address for the time to live period,
+		which may be hours or days.
+		After that time,
+		if they visit the website again,
+		then behind the scenes their computer will look up the address again
+		in case it's changed.
+		If you change the IP address,
+		for example because you move the site to a new hosting service,
+		there will be cutover period during which some visitors will go to the old address
+		and some will go to the new,
+		so you need to keep both servers running for a few days
+		until the requests to the old one dry up.
+	</p>
+
+	responsiveImage(/images/domain)
+	<p>
+		When I said earlier that a domain name or subdomain name "refers"
+		to a server,
+		this is what I mean.
+		There's an DNS A record with that name
+		containing the version 4 IP address of the server
+		and a DNS AAAA record containing the version 6 IP address
+		(or there's a CNAME record referring to the name
+		in those records).
+		If a client wants to send a request to a named server,
+		the DNS system takes the name and gives back the IP addresses.
+		The IP addresses tell a client computer where to send the request.
+	</p>
+	<p>
+		If you are using Ionos:
+		<ul>
+		<li>
+		navigate from your home page to 
+		the page for your domain and
+		use the Adjust DNS Settings option at the bottom.
+		</li>
+		<li>
+		Ionos may have already set up
+		your domain to use their hosting service.
+		When you set up your own records,
+		you will get a warning that the service is being disabled.
+		That's OK.</li>
+		<li>
+		Once you've created the records for the domain,
+		use the "subdomain" option at the top of the page to create "www". 
+		That subdomain then has its own control page.
+		Navigate through the menus to that
+		to create the A and AAAA records for the subdomain.
+	</li>
+		</ul>
+	</p>
+
+	<p>
+		Whichever DNS provider you use,
+		their user interface will probably be something like the above,
+		but with some interesting arbitrary differences.
+		They all have help desks that will advise you if you get into difficulties,
+		but you may be stuck for a day waiting for the answer. 
+	</p>
+
+	<p>
+		Once I've set those records up, I can use the dig command 
+		on my local computer to see the result.
+		(On a Windows machine, do this via a git bash window.)
+	</p>
+	<pre>
+$ dig accurateposition.org
+;; communications error to 192.168.0.1#53: connection refused
+;; communications error to 192.168.0.1#53: connection refused
+;; communications error to 192.168.0.1#53: connection refused
+
+; <<>> DiG 9.18.12-0ubuntu0.22.04.2-Ubuntu <<>> accurateposition.org
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 969
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 512
+;; QUESTION SECTION:
+;accurateposition.org.		IN	A
+
+;; ANSWER SECTION:
+accurateposition.org.	1799	IN	A	161.35.36.4
+
+;; Query time: 27 msec
+;; SERVER: 8.8.8.8#53(8.8.8.8) (UDP)
+;; WHEN: Thu Aug 10 14:54:14 BST 2023
+;; MSG SIZE  rcvd: 65
+	</pre>
+
+	<p>
+	The first few lines are errors.  Dig is expecting
+	my broadband modem to act as a DNS server -
+	some do, some don't.  Mine doesn't.
+	When that failed a couple of times it tried one of the public
+	DNS servers and got some results.
+	</p>
+	<p>
+		Back on your own computer,
+		check that the records are set up correctly.
+		You do this via a command window.
+		On Windows, start the Git Bash tool that you installed earlier.
+		On a Mac, start a terminal window.
+	</p>
+	<p>
+		In the command window, type:
+	</p>
+	<p>
+		<pre>
+			ping example.com
+		</pre>
+	</p>
+		<p>
+		Hit the Enter key to run the command.
+		If all is well
+		you will see something like:
+		<p><pre>
+		PING example.com (179.127.152.235) 56(84) bytes of data.
+		64 bytes from example.com (179.127.152.235): icmp_seq=1 ttl=50 time=11.9 ms
+		64 bytes from example.com (179.127.152.235): icmp_seq=2 ttl=50 time=9.42 ms
+		64 bytes from example.com (179.127.152.235): icmp_seq=3 ttl=50 time=10.1 ms
+		64 bytes from example.com (179.127.152.235): icmp_seq=4 ttl=50 time=10.3 ms
+	</pre></p>
+		Each line of output shows the version 4 IP address 
+		of your droplet.
+		(You may have to hold down the control key and type a "c" to stop the
+		command.)
+	<p>
+		If you get an error,
+		or the command hangs,
+		there's something wrong with the A or AAAA record that you set up.
+	</p>
+	<p>
+		 If you set up a subdomain, check that it's also working:
+	<p><pre>
+		ping www.example.com
+	</pre>
+	</p>
+	<p>
+		Any problems with that, check the subdomain's records.
+	</p>
+	<h3>Connecting to Your Remote Machine</h3>
+	<p>
+		Once you've sorted out the DNS records, 
+		you can log into your droplet and start work.
+		Log in from your command window like so:
+	</p>
+	<p>
+		On a Mac:
+		<pre>
+		sh root@example.com
+		</pre>
+	</p>
+	<p>
+		On Windows, you have to help it along a bit:
+		<pre>
+		ssh -i ~/.ssh/id_rsa_root root@example.com
+		</pre>
+	</p>
+	<p>
+		When you set up your key file
+		you supplied a password.
+		You have to supply that to continue.
+		</p>
+	<p>
+		The first time you log in you will get this scary message:
+	</p>
+	<p>
+		<pre>
+		The authenticity of host 'example.com (179.138.177.235)' can't be established.
+		ECDSA key fingerprint is SHA256:/FljgxBjsN2XYXWfF6ab6BnjrLY64+yXoiyIJZiQJac.
+		Are you sure you want to continue connecting (yes/no/[fingerprint])?
+		</pre>
+	</p>
+	<p>
+		Answer yes.
+	</p>
+	<p>
+		So you've logged in to your droplet.
+		What's to stop somebody else logging in?
+	</p>
+	<p>
+		You're logged into the remote machine as a user called "root" 
+		(the equivalent of the admin user on Windows).
+		That user has a home directory
+		containing a directory called ".ssh". 
+		In there is a file called <b>authorized_keys</b>
+		(American spelling).
+		You can display the contents like so:
+	</p>
+	<p>
+		<pre>
+		cat .ssh/authorized_keys
+		ssh-rsa AAAAB3NzaC1yc2EAAAADAQABZGHBAQDESnHZ02ZJooRGGFSz9XV1aqJq6BkNpadxf7eHi2hLOGEUdxWoC/td7Hhs42gUC8f7EzPpCbYOEaS0b4vwA53m2bkx9+FmkqpJxX2l8QJ2QYNcjrbW2CgSIBS3gIKreBPxVhTd5Ue+ZZJYoLLJcCWGNohwtkaxOFpBCI0hgkTtA658YCCP1Ps2EGjmabXkmktm2wx41x1ZzvUnDmSJxPg1YuKCHpTjtvB6AnhnJYAJvi/QHNPpDfOlMMbH3JJ4aLfuyyXyQlGDIKHxcM4f7f2SdZIp74lcopi62mcDmHccHM0doF13B9QYLyz15VkMJoPVBfNNjeaFUSNBAPjFP+09
+		</pre>
+	</p>
+		<p>
+			The key is one long line.
+			The authorized_keys file can contain many keys, one per line.
+		</p>
+	<p>
+		That key matches the contents of the public key file
+		<b>id_rsa_root.pub</b> on your computer.
+		When you set up your droplet,
+		you lodged a copy of your public key with the Digital Ocean user interface.
+		When it creates a droplet for you, 
+		it sets up an account called root with a .ssh directory
+		and an authorized_keys file
+		containing your public key.
+		So, when you try to connect,
+		the droplet knows that it's you.
+	</p>
+
+	<p>
+		(To be pedantic,
+		the droplet doesn't know that it's you connecting.
+		It knows that somebody opened a password-protected account with Digital Ocean
+		and supplied a valid 
+		credit card to pay for droplet rental.
+		It knows that somebody then logged into that account,
+		created a droplet and supplied a public key that
+		the droplet uses
+		to authenticate incoming connections.)
+	</p>
+	<p>
+		The root account on your droplet doesn't have a password,
+		so it's not possible to log in that way.
+		The only way to log in is
+		to have a private key in the .ssh directory in your home directory
+		on your local computer that matches one of the public keys
+		in root's authorized_keys file.
+	</p>
+	<p>
+		Having only one person able to 
+		control a computer which is vital to your organisation is obviously
+		not a great idea.
+		This mechanism allows you to allow other trusted people in.
+		They create their own key pair and send you their public key.
+		You log in and add it to the authorized_keys file.
+		They can log in as root.
+	</p>
+	<p>
+		Earlier I asked the question you may ask: 
+		"This all sounds very complicated.  Why can't I just use a password?". 
+		You can.
+		When you create  droplet, you can just specify a password for the root user.
+		Bad idea. 
+	</p>
+	<p>
+		On your droplet, there's a file called auth.log which is a record of login attempts.
+		You can see the most recent entries using the <b>tail</b> command like so:
+	</p>
+	<p>
+		<pre>
+	tail -100 /var/log/auth.log
+
+	Aug 29 09:31:31 example.com sshd[24565]: Disconnected from authenticating user root 122.195.200.148 port 14902 [preauth]
+	Aug 29 09:31:36 example.com sshd[24567]: Received disconnect from 222.186.15.101 port 58740:11:  [preauth]
+	Aug 29 09:31:36 example.com sshd[24567]: Disconnected from authenticating user root 222.186.15.101 port 58740 [preauth]
+	Aug 29 09:31:37 example.com sshd[24569]: Received disconnect from 222.186.42.117 port 51976:11:  [preauth]
+	Aug 29 09:31:37 example.com sshd[24569]: Disconnected from authenticating user root 222.186.42.117 port 51976 [preauth]
+	Aug 29 09:32:06 example.com sshd[24571]: Disconnected from invalid user rabbitmq from 180.240.229.254 port 40846
+	Aug 29 09:32:07 example.com sshd[24571]: Received disconnect from 180.240.229.254 port 40846:11: Bye Bye [preauth]
+	Aug 29 09:32:07 example.com sshd[24571]: Disconnected from invalid user rabbitmq 180.240.229.254 port 40846 [preauth]
+	Aug 29 09:35:30 example.com sshd[24576]: Received disconnect from 122.195.200.148 port 42495:11:  [preauth]
+	Aug 29 09:35:30 example.com sshd[24576]: Disconnected from authenticating user root 122.195.200.148 port 42495 [preauth]
+	Aug 29 09:38:31 example.com sshd[24578]: Received disconnect from 36.156.24.43 port 51260:11:  [preauth]
+	Aug 29 09:38:31 example.com sshd[24578]: Disconnected from authenticating user root 36.156.24.43 port 51260 [preauth]
+	Aug 29 09:47:41 example.com sshd[24582]: Received disconnect from 183.131.82.99 port 17573:11:  [preauth]
+	Aug 29 09:47:41 example.com sshd[24582]: Disconnected from authenticating user root 183.131.82.99 port 17573 [preauth]
+	Aug 29 09:52:41 example.com sshd[24586]: Received disconnect from 222.186.30.111 port 48306:11:  [preauth]
+		</pre>
+	</p>
+	<p>
+		Every few seconds somebody is attempting to log in
+		by guessing a user name and password.
+		Your machine is under attack!
+	</p>
+	<p>
+		DNS records are public - they have to be - and these attacks started as soon
+		as you created the A record announcing the existence of your machine.
+		There's an automatic process running somewhere,
+		probably several of them,
+		trying all the time to break in.
+		They guess likely user names and then guess passwords,
+		starting with the obvious choices that lots of people are known to use - 
+		"passw0rd", "secret123" and so on.
+		If that doesn't work, they use brute force,
+		trying all combinations of characters, one by one.
+		However complicated you make your password,
+		eventually one of these processes will guess it
+		and the hacker can break in.
+	</p>
+	</p> 
+		Once they are into the machine,
+		they will take it over.
+		If you're lucky, they will just delete all your files,
+		or they might encrypt all your files and charge you 
+		a ransom to decrypt them.
+		(Whether they get round to doing the decryption is another matter.)
+		Along the way, they may also harvest all the email addresses
+		in incoming and outgoing mail,
+		and sell them to other scammers.
+		If you're very unlucky,
+		they can use your machine to store illegal material 
+		that they don't want on their own machine - terrorist manuals,
+		child pornography, you name it.
+		If the police find that stuff on your machine,
+		your will have some explaining to do.
+	</p>
+	<p>
+		Why doesn't somebody stop these people?
+		If you take a look at the list again,
+		each request comes from a different IP address,
+		so a different computer.
+		Whoever is doing this is using computers belonging to other people
+		that they have already broken into.
+		Whose computers are they using?
+		They belong to those silly, silly people who said 
+		"This authentication key stuff is all very complicated.  
+		Why don't I just use a password?"
+	</p>
+	<h3>Installing Software on Your Server</h3>
+		<p><a href='https://www.digitalocean.com/community/tutorials/how-to-install-git-on-debian-10'>installing git</a></p>
+
+		<p><a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-debian-10">installing docker</a></p>
+
+
+	<p>
+		The root user is very useful for setting things up,
+		but it has a very high level of privilege
+		and a mistake can be disastrous.
+		Next we create an ordinary user
+		which we will use for normal work.
+		Here I call that user <b>simon</b>. 
+		When I showed how to create SSH keys earlier
+		I suggested that you create two sets.
+		The first set is for this user.
+		The public key is called <b>id_rsa.pub</b>,
+		the default.
+		We want to create a user with no password
+		and the contents of that public key in its <b>authorized_keys</b> file.
+		Once logged in, it needs to be able to run docker.
+	</p>
+		<p>
+			You need to get the command shown below exactly right,
+			so if you're not used to Linux,
+			copy and paste them.
+			Note that pasting into a command window
+			doesn't work the way you might expect.
+			To paste, right-click anywhere in your command window and select Paste from the menu that appears.
+		</p>
+	<p>
+		First, set the name of your user.  I'm going to call my user "simon".
+	</p>
+	<p>
+<pre>
+    user=simon
+</pre>
+That creates a variable containing the name of the user.
+Change that line according to your needs.
+You can then copy and paste the rest of these commands.
+The text ${user} in the commands below is replaced automatically
+by whatever word you set.
+</p>
+<pre>
+useradd ${user} --create-home
+usermod -L ${user}
+mkdir /home/${user}/.ssh
+chmod 700 /home/${user}/.ssh
+chown -R ${user}:${user} /home/${user}/.ssh
+usermod -aG docker ${user}
+</pre>
+Start a second command window on your computer and
+set the user name again (It only works in one window).
+Create another variable containg the name of your domain.
+Then copy the public key into your user's .ssh directory and call it <b>authorized_keys</b>:
+<pre>
+	user=simon
+	domain=example.com
+</pre>
+Then you can copy and paste this command:
+<pre>
+	scp ~/.ssh/id_rsa.pub root@${domain}:/home/${user}/.ssh/authorized_keys
+</pre>
+In my case
+that would be the same as typing this:
+<pre>
+	scp ~/.ssh/id_rsa.pub root@example.com:/home/simon/.ssh/authorized_keys
+</pre>
+which means "take the file id_rsa.pub from the .ssh directory in my home directory
+on this machine,
+connect over the network to the machine called example.com as its user root,
+copy my file to the .ssh directory in
+the user simon's home directory and call it authorized_keys".
+<p>
+Back in your first command window 
+(which is logged into the droplet as root)
+change the ownership of the files you just created
+so that they belong to your new user:
+<pre>
+    chown -R ${user}:${user} /home/${user}/.ssh
+</pre>
+</p>
+<p>
+Now that you have the authorized_keys file set up,
+you can now use your second command window
+to log in as your new user:
+<pre>
+	ssh ${user}@${domain}
+</pre>
+	When you use ssh on a Windows system,
+	it assumes that the private key is called
+	id_rsa.
+	In the example earlier the file had a different name and you had to help it along.
+	Now you're using the default name,
+	so the command works without help.
+	On a Mac,
+	the system figures out which is the correct key and uses that without help.
+</p>
+<p>
+	Now you are logged into your server from two command
+	windows.
+	In one you are logged in as root, and one mistake there can be disastrous.
+	In the other you are logged in as your ordinary user,
+	which is much safer.
+	You don't need root access now
+	so disconnect that window -
+	click on it, hold down the ctrl key and type 'd' just once - no enter key needed.
+	The command window stays up,
+	but it's no longer connected to the remote machine.
+	any command you type in there runs on your local machine.  
+</p>
+<p>
+	Having separate private keys for root access
+	and your ordinary account is useful,
+	especially if several people use the same accounts.
+	You can control what they can do by giving them copies of different keys.
+</p>
+
+<p>
+In the second window,
+which is still logged in,
+check that your ordinary account can run docker
+by running the docker hello-world test container.
+This just displays "Hello from Docker!"
+along with lots of other stuff:
+<pre>
+	docker run hello-world
+</pre>
+That produces:
+<pre>
+	Unable to find image 'hello-world:latest' locally
+	latest: Pulling from library/hello-world
+	2db29710123e: Pull complete 
+	Digest: sha256:37a0b92b08d4919615c3ee023f7ddb068d12b8387475d64c622ac30f45c29c51
+	Status: Downloaded newer image for hello-world:latest
+	
+	Hello from Docker!
+	This message shows that your installation appears to be working correctly.
+	
+	To generate this message, Docker took the following steps:
+	 1. The Docker client contacted the Docker daemon.
+	 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+		(amd64)
+	 3. The Docker daemon created a new container from that image which runs the
+		executable that produces the output you are currently reading.
+	 4. The Docker daemon streamed that output to the Docker client, which sent it
+		to your terminal.
+	
+	To try something more ambitious, you can run an Ubuntu container with:
+	 $ docker run -it ubuntu bash
+	
+	Share images, automate workflows, and more with a free Docker ID:
+	 https://hub.docker.com/
+	
+	For more examples and ideas, visit:
+	 https://docs.docker.com/get-started/
+</pre>
+</p>
+<p>
+	You have a user which is safe to use -
+	you can't wreck your system 
+	by making a simple mistake.
+	Your user can also run docker.
+	As we'll see later,
+	that makes it very easy to install services.
+</p>
+	<h3>Help With Linux Commands</h3>
+<p> 
+	If you've not used Linux before,
+	now you can use docker to run some software
+	that teaches you some more useful commands.
+	You can find out more about that
+	<a href="/projects/learn">here</a>
+</p>
+		<h3>Next Step - Installing a Web server</h3>
+		<p>
+			Now you can install a web server.
+			Find out how to do that
+			<a href="web.server.html">next</a>.
+		</p>
+
+include(sourceRoot/trailer.m4.html)

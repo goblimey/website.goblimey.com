@@ -1,0 +1,67 @@
+include(../../definitions.m4)
+define(pageTitle, `Scaffolder')
+include(../../leader.m4.html)
+
+	<h2>The Goblimey Scaffolder</h2>
+	<p>
+		Given a description of a database and its tables, the Goblimey Scaffolder creates that database
+		and generates a web server which provides the Create, Read, Update and Delete (CRUD) operations
+		on it.
+	</p>
+	<p>
+		These notes are aimed at readers who are new to programming,
+		so they are very detailed and go at a fairly slow pace.  
+		There's a much faster introduction
+		<a href='https://github.com/goblimey/scaffolder'>here</a> 
+		which is aimed at more experienced readers. 
+	</p>
+	<p>
+		The scaffolder is written in the Go programming language, 
+		as is the web server that it produces.
+		The server is designed according to the Model, View, Controller (MVC) architecture and is
+		implemented using RESTful requests.  (Those buzzwords are explained in more detail later.)
+		The result is presented as a complete prototype Go project with all source code included
+		along with unit and integration tests to check that the whole thing hangs together.
+	</p>
+	<p>
+		The idea of the scaffolder is taken from the Ruby-on-Rails scaffold generator.
+	</p>
+	<p>
+		Producing the right design for the database that sits behind a web site usually takes several attempts.
+		The scaffolder gives you a quick and easy way to create databases, put data into them and experiment with different versions.
+		Once you have a working version, you can extend the source code and produce your own production web server.
+		That's much easier than producing one from scratch.
+	</p>
+	<p>
+		Producing a complete piece of working source code also makes the scaffolder
+		a very useful aid to learning Go.
+		That means that it may be used by people who are new to Go and
+		possibly new to programming,
+		so this document doesn't assume extensive knowledge of Go or the Go tools.
+		That makes it a bit longer and more complicated than it would otherwise need to be,
+		but readers can just skip the parts that they understand.
+	</p>
+	<p>
+		Some readers will be using a computer which is running Microsoft Windows.
+		Many people (including me) think that Windows is not the best operating system
+		to use for software development, and many Go developers use a Linux machine or an Apple Mac.
+		However, if Windows is the only system you know, it's perfectly adequate.
+	</p>
+
+	<a href='1.1.installing.go.html'>1.1 Installing Go</a>
+	<br/>
+	<a href='1.2.installing.the.scaffolder.html'>1.2 Installing the Scaffolder</a>
+	<br/>
+	<a href='1.3.installing.mysql.html'>1.3 Installing MySQL</a>
+	<br/>
+	<a href='2.1.creating.a.project.html'>2.1 Creating a Project</a>
+	<br/>
+	<a href='2.2.the.json.spec.html'>2.2 The JSON Specification</a>
+	<br/>
+	<a href='2.3.running.the.scaffolder.html'>2.3 Running the Scaffolder</a>
+	<br/>
+	<a href='2.4.running.the.server.html'>2.4 Running the Server</a>
+
+
+include(../../trailer.m4.html)
+

@@ -1,0 +1,186 @@
+include(sourceRoot/definitions.m4)
+define(pageTitle, `Running Learn')
+include(sourceRoot/leader.m4.html)
+
+linksList(3.shutting.down.html, index.html, 5.permanent.installation.html)
+
+<h3>About the Learn Software</h3>
+
+<p>
+	Learn is a Computer-Based Teaching tool that gives basic training in using UNIX and Linux.
+	(Linux is a version of UNIX.)
+</p>
+
+<p>
+	The UNIX operating system was developed by computer science researchers
+	at Bell Laboratories
+	in the 1970s
+	and became available outside Bell in the 1980s.
+	Within Bell it was used by all sorts of people.
+	This was before the advent of personal computers and
+	some of the users had little or no experience of computers.
+	Mike Lesk and Brian Kernighan created the learn system
+	to explain how to use computers in general and UNIX in particular.
+</p>
+<p>
+	The lessons in learn reflect the state of computing in the late 1970's,
+	in particular the command-line interface that was used in those days.
+	You see a prompt, you type a command,
+	it runs and produces a result,
+	you see another prompt,
+	and so on.
+	These days we all use very powerful desktop or laptop computers.
+	Point and click window-based operating systems
+	such as Microsoft Windows
+	have replaced the old command-line interfaces
+	and interactive screen-based word processors
+	have replaced the very primitive text editors
+	of the 1970's.
+	The learn system became redundant and fell out of use.
+	Later versions of UNIX didn't even include it.
+</p>
+<p>The learn software is not strictly open-source in the conventional sense.
+	The material is copyright AT&T, but a note in the source code gives permission for fairly free use.
+	For the precise conditions, see the file LICENSE or any of the C source files.
+</p>
+<p>
+	Early versions of UNIX
+	needed a fairly expensive computer to run
+	and it was licensed -
+	companies using it had to pay
+	a license fee to use it.
+	Then,
+	personal computers became powerful enough
+	to run UNIX and free versions emerged,
+	notably Linux.
+</p>
+<p>
+	The learn software was originally included in
+	version 7 UNIX which was released in 1978.
+	The software and the lessons
+	were not reworked as UNIX developed
+	and they became increasingly out of date.
+	Later versions of UNIX didn't even
+	include the learn software.
+	The C source code was preserved by the OpenBSD
+	group,
+	but C itself had changed
+	and the learn system no longer even compiled.
+</p>
+<p>
+	In 2002 I applied some simple changes
+	to make learn work again
+	and later released the result on Github,
+	but there was still a chicken and egg problem.
+	Learn is aimed at people
+	who don't know anything about UNIX,
+	but they needed to know enough
+	to build and
+	install learn,
+	and they needed
+	a computer running UNIX
+	to run it on.
+	That was OK if they owned an Apple Mac,
+	but the majority only had
+	a machine running Microsoft Windows.
+	In any case,
+	Linux also now offered
+	a point-and-click windowing interface,
+	so you could use it without knowing anything
+	about the command-line interface.
+</p>
+<p>
+	With the growth of Virtual Private Server (VPS) systems AKA cloud computing,
+	the situation has changed again.
+	A large computer system can now be made up of hundreds
+	or even thousands
+	of low-powered <b><i>virtual computers</i></b>.
+	(Virtual meaning that one very powerful computer
+	simulates (pretends to be) many small computers.)
+	Typically these virtual computers exist in some remote data Centre
+	and are used as
+	<b><i>servers</i></b>
+	(computers providing some service over a network).
+	The companies that use them rent them by the month or sometimes by the second,
+	controlling them via the Internet.
+	I run my web server on a virtual server rented from
+	Digital Ocean
+	and it costs me $5 per month.
+</p>
+<p>
+	If you build your system out of a few hundred virtual computers,
+	you don't want to pay for a few hundred operating system licences.
+	Being free, Linux has become one of the operating system of choice
+	for cloud computing.
+
+</p>
+<p>
+	We use cloud servers because they are cheap,
+	and the cheapest way to access them is via a command-line interface
+	rather than a point-and-click windowing system.
+	So we are now back where we were
+	in the late 1970's,
+	controlling a low-powered computer
+	by typing a command, waiting for it to finish
+	and then typing another.
+	Generations of techies who are used to running
+	Microsoft Windows systems
+	via a nice point-and-click interface
+	now have to get their heads around
+	running cloud-based Linux systems
+	via a command-line interface.
+</p>
+<p>
+	Hmm.
+	We used to have a piece of software
+	that helped people do that.
+	It was called "learn".
+	Trouble is,
+	it's not included by default
+	in Linux systems anymore,
+	and in any case,
+	most of the people who could benefit from it
+	only know how to use
+	Microsoft Windows,
+	so ideally learn
+	should run under that.
+</p>
+<p>
+	The solution is, again,
+	virtual computing.
+	From Windows version 10 onwards
+	a laptop running Windows Home
+	can also simulate several virtual computers
+	using the <b><i>Docker</i></b> software
+	which offers <b><i>containerisation</i></b>.
+	It allows you to package up a complete computer system -
+	operating system and application software -
+	and run the whole thing in a virtual computer
+	within a Microsoft Windows system.
+	So, I can provide a complete ready-made Linux system
+	with the learn software installed
+	that you can run on your Windows machine
+	in a Docker container.
+	Once you've used learn to teach you the basics
+	you can use the same Linux container
+	to experiment and go further.
+</p>
+
+
+
+
+<p>
+	Now over forty years old,
+	the learn software looks a little clunky
+	compared to modern computer-based training systems.
+	Its power as a teaching tools
+	comes from the fact that
+	it drives the user
+	through a series of exercises using UNIX commands
+	on a real UNIX system.
+</p>
+
+linksList(3.shutting.down.html, index.html, 5.permanent.installation.html)
+
+
+include(sourceRoot/trailer.m4.html)

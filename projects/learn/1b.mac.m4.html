@@ -1,0 +1,61 @@
+include(sourceRoot/definitions.m4)
+define(pageTitle, `Learn Under Windows')
+include(sourceRoot/leader.m4.html)
+<br>
+linksList(1.installing.learn.html, index.html, 2.running.learn.html)
+
+<h2>Installing Learn on an Apple Mac</h2>
+
+
+<p>
+	You need to install Docker and git.
+</p>
+<p>
+	<a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">installing git</a>
+</p>
+<p>
+	<a href="https://docs.docker.com/docker-for-mac/install/">installing Docker</a>
+</p>
+<p>
+	You need to know how to start a command window.
+	That's described <a
+		href="https://support.apple.com/en-gb/guide/terminal/apd5265185d-f365-44cb-8b09-71a064a42125/mac/">here</a>.
+</p>
+
+<p>
+	Start a command window,
+	then
+	download learn like so:
+<pre>
+    git  clone  https://github.com/goblimey/learn-unix
+</pre>
+That creates a directory called learn-unix
+containing the learn software.
+</p>
+<p>
+	Change directory to learn-unix
+	and build the software like so:
+<pre>
+    cd  learn-unix
+
+    docker  build  .  -t  learnunix
+</pre>
+(That's docker space build space
+dot space hyphen t space learnunix.)
+</p>
+<p>
+	That last command will take a few minutes and display a running commentary.
+	If all goes well, the last few lines
+	should be something like:
+<pre>
+    Successfully built 446990c342ad
+    Successfully tagged learnunix:latest
+</pre>
+<br>
+The build was successful and produced a Docker image with ID 446990c342ad.
+</p>
+
+<br>
+linksList(1.installing.learn.html, index.html, 2.running.learn.html)
+
+include(sourceRoot/trailer.m4.html)

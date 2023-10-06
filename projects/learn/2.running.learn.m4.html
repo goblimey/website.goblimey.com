@@ -1,0 +1,77 @@
+include(sourceRoot/definitions.m4)
+define(pageTitle, `Running Learn')
+include(sourceRoot/leader.m4.html)
+
+linksList(1.installing.learn.html, index.html, 3.shutting.down.html)
+
+<h3>Running Learn</h3>
+
+<p>
+	Onc you've built the image,
+	run it in a command window.
+	(Under Windows, that's the same DOS Command window
+	that you used to build the image.)
+</p>
+<p> Run the image like so:</p>
+<pre>
+    docker  run  -it  --entrypoint=/bin/bash  learnunix
+    </pre>
+<p>That starts the docker image running within a container
+	and produces a prompt something like this:</p>
+
+<pre>
+    learner@79c33cdc14ac:/learn$
+</pre>
+
+<p>Within the Docker session an account called "learner" is logged in.
+	You will use that account to run learn. The system is
+	prompting for a command. (The dollar sign
+	at the end of the line is a prompt.)
+	Run this command.
+</p>
+
+<pre>
+    learn  files
+</pre>
+<p>and you will see this:</p>
+
+<pre>
+        If you were in the middle of this subject
+        and want to start where you left off, type
+        the last lesson number the computer printed.
+        To start at the beginning, just hit return.</pre>
+
+<p>Press the Return key (the Enter key)
+	and the first lesson will begin.</p>
+
+<p>You can do the lessons at your own speed.</p>
+
+<p>
+	Once you've finished the <b>files</b> course,
+	do the <b>more files</b> course
+	("learn more files").
+	There are other courses, but they are less relevant
+	to modern-day computing.
+</p>
+
+<p>
+	If you want to give up at any point, note the number of the last lesson you completed and shut the learn system
+	down.
+	To do that, hold down the CTRL key and type a single d
+	(no return key needed). The learn command exits,
+	freeing up your command window.
+</p>
+
+<p>
+	When you end the docker session
+	(see later),
+	all the files that you created in it are tidied away. Unfortunately, learn also
+	forgets how far you got.
+	That's why you need to keep a note of your last lesson number.
+	When you start learn next time, you can
+	give it a lesson number and it continues from that point.
+</p>
+<br>
+linksList(1.installing.learn.html, index.html, 3.shutting.down.html)
+
+include(sourceRoot/trailer.m4.html)

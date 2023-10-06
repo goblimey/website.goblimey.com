@@ -1,0 +1,215 @@
+include(../../definitions.m4)
+define(pageTitle, `The JSON Specification')
+include(../../leader.m4.html)
+
+linksList(`2.1.creating.a.project.html', `index.html', `2.3.running.the.scaffolder.html')
+
+<h1>The Goblimey Scaffolder</h1>
+<h2>2.2 The JSON Specification</h2>
+<p>
+	The scaffolder is driven by a text file in JavaScript Object Notation (JSON) format
+	that specifies a database and a set of tables.
+	JSON is described <a href='http://www.json.org'>here</a>.
+</p>
+<p>
+	When you are writing JSON, it's very easy to make a simple mistake such as missing out a comma.
+	The scaffolder uses an off-the-shelf JSON processor and the error messages it produces are not very helpful.
+	You will save yourself a lot of pain if you prepare the file
+	using an editor that understands JSON and warns you about obvious errors.
+	Most Integrated development Environments (liteIDE, Eclipse, IntelliJ, VSCode etc) have editors that will do this.
+	Some text editors including Windows Notepad++ also understand JSON.
+</p>
+<p>
+	The scaffolder includes an example specification file so you can use that for a quick experiment.
+	Copy goprojects/scaffolder/examples/animals.scaffold.json into your project directory and rename it scaffold.json.
+</p>
+<p>
+	That specification defines a MySQL database called "animals" containing tables "cats" and "mice":
+</p>
+<pre><code>
+    {
+        "name": "animals",
+        "db": "mysql",
+        "dbuser": "webuser",
+        "dbpassword": "secret",
+        "dbserver": "localhost",
+        "orm": "gorp",
+        "sourcebase": "github.com/alunsmithie/animals",
+        "Resources": [
+            {
+                "name": "cat",
+                "fields": [
+                    {
+                        "name": "name", "type": "string", "mandatory": true,
+                        "testValues": ["a","b"]
+                    },
+                    {
+                        "name": "breed", "type": "string", "mandatory": true
+                    },
+                    {
+                        "name": "age", "type": "int", "mandatory": true,
+                        "excludeFromDisplay": true
+                    },
+                   {
+                        "name": "weight", "type": "float", "mandatory": true,
+                        "excludeFromDisplay": true
+                    },
+		    {
+                        "name": "chipped", "type": "bool",
+                        "excludeFromDisplay": true
+                    }
+                ]
+            },
+            {
+                "name": "mouse", "plural": "mice",
+                "fields": [
+                    { "name": "name", "type": "string", "mandatory": true },
+                    { "name": "breed", "type": "string", "excludeFromDisplay": true }
+                ]
+            }
+        ]
+    }
+	</code></pre>
+<p>
+	As the JSON website explains, JSON is built on two structures:
+</p>
+<ol>
+	<li>A collection of name/value pairs.</li>
+	<li>An ordered list of values (AKA an array).</li>
+</ol>
+<p>
+	For example in the first line above "name": "animals" is a pair with name "name" and value "animals". It defines the
+	name of the resulting go project and the database table that it controls.
+	The value can be a strings of text, a number, a boolean value (true or false) and so on.
+</p>
+<p>
+	A JSON list is enclosed in brackets, for example
+</p>
+<p>
+	"testValues": ["a","b"]
+</p>
+<p>
+	That defines a list called "testValues" which contains strings of text.
+</p>
+<p>
+	The Resources section is a more complicated list, containing a sub-hierarchy of pairs.
+</p>
+<p>
+	As far as the scaffolder is concerned, each resource section in the JSON specification
+	defines a database table, a model with an associated repository, a controller and a set of views.
+</p>
+<p>
+	In the example, the first few lines of the JSON define the database. It's the one we created earlier, a MySQL
+	database called "animals" accessed using the user name "webuser" and the password "secret".
+	"localhost" means that the MySQL server is running on this computer and listening on the default port. (You can
+	specify the port like so: "dbport": "1234".)
+</p>
+<p>
+	The ORM pair says which ORM to use. At present
+	the only one supported is <a href='https://github.com/coopernurse/gorp'>(GORP)</a> version 1.
+	I plan to add support for other ORMs in the future.
+</p>
+<p>
+	The sourcebase says where the generated source code should be stored within the project. This should follow the Go
+	package layout conventions.
+	In this example the project will stored in the github repository http://github.com/alunsmithie/animals, so the
+	sourcebase value is "github.com/alunsmithie/animals". Given that, the scaffolder creates material in
+	src/github.com/alunsmithie/animals within the go workspace directory.
+</p>
+<p>
+	Next comes the Resources section, which is a JSON list.
+	Each entry describes a resource with an associated database table,
+	This example describes the "cat" resource handling the "cats" table and the "mouse" resource handling the "mice"
+	table.
+</p>
+<p>
+	Traditionally, database tables are named using the plural of the data that they contain.
+	If that's just the singular with an "s" added, you don't need to specify it.
+	The plural of "mouse" is "mice" so you have to define that in the JSON.
+</p>
+<p>
+	"name": "mouse", "plural": "mice",
+</p>
+<p>
+	Each resource section defines a list of fields. The cat resource has fields "name" and "breed" which contain strings
+	of text,
+	"age" containing an integer (a whole number)
+	"weight" containing a floating point number (one with a fractional part)
+	and "chipped" containing a boolean value (true or false)
+	recording whether or not the cat has been microchipped.
+	All fields but the last are mandatory.
+	The mouse resource has just two fields.
+</p>
+<p>
+	The scaffolder generates a set of unit and integration test programs to check that the generated source code works
+	properly.
+	A unit test takes a module of the source code and runs it in isolation, supplying it with test values and checking
+	that the module produces the expected result. An integration tests is similar, but tests that a set of modules work
+	together properly.
+	Each field in the JSON can have a list of testValues to be used by the tests.
+	This is optional. If you don't specify test values, they are generated automatically.
+	If you don't specify enough values, the rest are generated automatically.
+	Currently none of the the generated tests use more than two values,
+	so a list of two values is sufficient.
+</p>
+<p>
+	The optional excludeFromDisplay value in the JSON
+	controls a display label which is used to identify each database record on the generated web pages.
+	For example in the cats resource the fields "age", "weight" and "chipped" are excluded
+	from the display label, leaving the ID, name and breed fields.
+	So if Tommy the Siamese cat is described by record 42 in the cats table the display label for that record will be:
+</p>
+<pre><code>
+    42 Tommy Siamese   
+	</code></pre>
+<p>
+	The display label is used for various purposes.
+	For example, the index page for a resource shows a list of display labels,
+	one for each record.
+</p>
+
+<p>
+	The display label is also used to create the title of the page that displays a single record
+	(the Show page) and the one that allows you to change the data in the record (the Edit page).
+	Within the HTML the label also used to create the IDs of the document fields to aid automated testing tools such as
+	Selenium.
+</p>
+<p>
+	By default the display label contains the value of every field in the record.
+	That can be a lot more information than you want and often just a few fields are enough.
+</p>
+<p>
+	The tables are created by GORP the first time you run the web server.
+	Each table has the fields specified in the JSON, plus an auto-incremented unique numeric ID.
+	The cats table will look like this:
+</p>
+<pre><code>
+    mysql> describe cats;
+    +---------+---------------------+------+-----+---------+----------------+
+    | Field   | Type                | Null | Key | Default | Extra          |
+    +---------+---------------------+------+-----+---------+----------------+
+    | id      | bigint(20) unsigned | NO   | PRI | NULL    | auto_increment |
+    | name    | varchar(255)        | YES  |     | NULL    |                |
+    | breed   | varchar(255)        | YES  |     | NULL    |                |
+    | age     | bigint(20)          | YES  |     | NULL    |                |
+    | weight  | double              | YES  |     | NULL    |                |
+    | chipped | tinyint(1)          | YES  |     | NULL    |                |
+    +---------+---------------------+------+-----+---------+----------------+
+	</code></pre>
+<p>
+	The ID field is an auto-incremented unique integer.
+	When you create a record you don't have to set it.
+	The first record will have ID 1, the next ID 2 and so on.
+	The rest of the fields are as specified in the JSON.
+</p>
+
+<table>
+	<tr>
+		<td><a href='index.html'>Contents Page</a></td>
+		<td><a href='2.1.creating.a.project.html'>Previous</a></td>
+		<td><a href='2.3.running.the.scaffolder.html'>Next</a></td>
+	</tr>
+</table>
+
+
+include(../../trailer.m4.html)

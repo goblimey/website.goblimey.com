@@ -1,0 +1,143 @@
+include(../../definitions.m4)
+define(pageTitle, `Web Server')
+include(../../leader.m4.html)
+
+linksLastPage(`domain.html', `index.html')
+
+<h3>Creating a Web server</h3>
+<p>
+    This section shows how to set up a web server on your droplet.
+    It doesn't cover actually writing web pages.
+    That's a very big subject
+    and there is already plenty of material about it on the web.
+    There are also many good books on the subject
+    including David Karlins'
+    <i>Building Websites for Dummies</i>
+    published by John Wiley.
+    This section explains how to configure the web server
+    that's already installed on your droplet
+    and where to put the pages
+    once you've created them.
+</p>
+<p>
+    If you specified Debian when you created your droplet, the Apache web server will already be installed.
+    You need to configure it.
+</p>
+<p>
+    From your local machine, log into your server as root:
+<pre>
+    ssh root@example.com
+</pre>
+or on Windows:
+<pre>
+        ssh -i ~/.ssh/id_rsa_root root@example.com
+    </pre>
+
+<p>
+    In the directory /etc/apache2/sites-available there's a file
+    <b>000-default.conf</b>.
+    You need to edit it.
+    Uncomment the ServerName line and set it to your domain name.
+    Add a serverAlias line for your www subdomain.
+    Change the ServerAdmin line to contain your email address.
+</p>
+<p>
+    Initially the file starts something like this:
+<pre>
+    <VirtualHost *:80>
+        # The ServerName directive sets the request scheme, hostname and port that
+        # the server uses to identify itself. This is used when creating
+        # redirection URLs. In the context of virtual hosts, the ServerName
+        # specifies what hostname must appear in the request's Host: header to
+        # match this virtual host. For the default virtual host (this file) this
+        # value is not decisive as it is used as a last resort host regardless.
+        # However, you must set it for any further virtual host explicitly.
+        #ServerName www.example.com
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/html
+    </pre>
+Change it to something like this:
+<pre>
+        <VirtualHost *:80>
+        # The ServerName directive sets the request scheme, hostname and port that
+        # the server uses to identify itself. This is used when creating
+        # redirection URLs. In the context of virtual hosts, the ServerName
+        # specifies what hostname must appear in the request's Host: header to
+        # match this virtual host. For the default virtual host (this file) this
+        # value is not decisive as it is used as a last resort host regardless.
+        # However, you must set it for any further virtual host explicitly.
+
+        ServerName example.com
+        ServerAlias www.example.com
+        ServerAdmin youremailaddress
+        DocumentRoot /var/www/html
+</pre>
+To write out the changes, see the line at the bottom of the command window -
+hold down the ctrl key and type 'o',
+hit the enter key to confirm the destination file,
+then ctrl and 'x' to quit the editor.
+</p>
+<p>
+    Now you can start the web server:
+<pre>
+    systemctl start apache2
+</pre>
+</p>
+When Apache is installed,
+a standard home page is set up.
+You should be able to see it from your web browser by navigating to
+your web site - my case to
+<b>http://example.com/</b>
+<p>
+    Having said that, the Chrome web browser no longer likes http pages.
+    It will try to use <b>https://example.com/</b> instead,
+    which doesn't work yet.
+</p>
+<h3>Setting up HTML pages</h3>
+<p>
+    The control file that you edited earlier <b>000-default.conf</b> says that
+    the document root is the directory <b>/var/www/html</b>.
+    This is where your HTML pages live.
+    It contains HTML files.
+    and subdirectories containing HTML files.
+    Each subdirectory of that should contain a file called <b>index.html</b>.
+    For example,
+    <b>/var/www/html/index.html</b> is your home page.
+    Its URL is <b>http://example.com/</b>
+    or <b>http://www.example.com/</b>
+</p>
+<p>
+    Within the document root directory
+    the subdirectory names determine the URL of each page.
+    If you create a directory <b>/var/www/html/about</b> and a file <b>/var/www/html/about/index.html</b>,
+    the URL for that page is <b>http://example.com/about/</b>.
+</p>
+<p>
+    If you create a file <b>/var/www/html/about/us.html</b>,
+    its URL is <b>http://example.com/about/us.html</b>
+</p>
+<p>
+    The home page determines which pages can be found.
+    If the home page contains a link to <b>http://example.com/about/</b>
+    then somebody visiting the site can find that page.
+    If that page contains a link to <b>http://example.com/about/us.html</b>,
+    then a visitor can find that, and so on.
+</p>
+<p>
+    One way to create web pages is to do it on your local computer
+    using your chosen web page writing software
+    and then copy the pages across to the web server using the scp command in a command window.
+    For example, if your command window is in the <b>about</b> directory
+    on your local machine
+    and that contains the files
+    <b>index.html</b> and <b>us.html</b>,
+    and you've already created a directory <b>/var/www/html/about</b>
+    on the web server,
+    you can copy the files over like so:
+<pre>
+    scp index.html us.html root@example.com:/var/www/html/about/
+</pre>
+</p>
+
+include(../../trailer.m4.html)
