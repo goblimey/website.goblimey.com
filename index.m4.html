@@ -2,26 +2,46 @@ include(definitions.m4)
 define(pageTitle, `Goblimey.com home')
 include(leader.m4.html)
 
-		<p>
-			“Go (often referred to as golang) is a free and open source programming language 
-			created at Google in 2007 by Robert Griesemer, Rob Pike, and Ken Thompson. 
-			It is a compiled, statically typed language in the tradition of Algol and C, 
-			with garbage collection, limited structural typing, memory safety features and 
-			CSP-style concurrent programming features added.  
-			The language was announced in November 2009; 
-			it is used in some of Google's production systems, as well as by other firms.” Wikipedia.
-		</p>
-		<p>
-			My <a href='https://github.com/goblimey'>GitHub page</a> 
-			contains various things that I've written in Go,
-			notably my Scaffolding tool,
-			which produces an instant web server. 
-		        The github page gives basic instructions
-			on how to use the scaffolder,
-			but some of the people who use it may be
-			new to programming, let alone Go.
-		        There is a much gentler introduction for them 
-			<a href='/scaffolder/index.html'>here</a>.
-		</p>
+<p>
+	“Go (often referred to as golang) is a free and open source programming language
+	created at Google in 2007 by Robert Griesemer, Rob Pike, and Ken Thompson.
+	It is a compiled, statically typed language in the tradition of Algol and C,
+	with garbage collection, limited structural typing, memory safety features and
+	CSP-style concurrent programming features added.
+	The language was announced in November 2009;
+	it is used in some of Google's production systems, as well as by other firms.” Wikipedia.
+</p>
+<p>
+	My <a href='https://github.com/goblimey'>GitHub page</a>
+	contains various things that I've written in Go.
+	I'm particularly interested in accurate satellite
+	positioning systems such as GPS
+	and I've written software to support that.
+	My github page contains
+	<a href="https://github.com/goblimey/ntripcaster/">
+		a dockerised version of the BKG NTRIP caster
+	</a>
+	and my
+	<a href="https://github.com/goblimey/go-ntrip/">
+		Go tools to support the NTRIP protocol
+	</a>.
+</p>
+<p>
+	Setting up services such as a simple web server
+	or an NTRIP caster involves
+	renting a virtual server and an Internet domain name for it.
+	You can find notes on how to do that
+	<a href="https://goblimey.com/projects/webserver/">here</a>.
+</p>
+<p>
+	That involves setting up a server using
+	the UNIX command line interface,
+	which needs a knowledge of UNIX commands.
+	I support some free computer-based training software
+	that you can use to learn the basics of that.
+	Find out more about that
+	<a href="https://goblimey.com/projects/learn/">here</a>.
+
+</p>
 
 include(trailer.m4.html)
