@@ -44,7 +44,7 @@ linksFirstPage(, `domain.html')
 	That's the essential idea - nobody else
 	knows what's in your private key file
 	but anybody can know what's in your public key file.
-	The prvate key is password protected.
+	The private key is password protected.
 	You need to supply the password to use it.
 </p>
 <p>
@@ -68,9 +68,17 @@ linksFirstPage(, `domain.html')
 </p>
 <p>
 	Create your keys using the <b>ssh_keygen</b> command.
-	I believe that this comamnd is now standard in Windows,
-	so you can run it in the standard cmd window.
-	If not, run it in a git bash window:
+	On a Mac, start a terminal and run the command in that.
+	I believe that this command is now standard in Windows,
+	so you can run it in a command window.
+	(To start a command window,
+	type "cmd" in the search bar at the bottom of the screen
+	and double click on the black icon that appears.)
+	If not, run it
+	in a Git Bash window.
+</p>
+<p>
+	In all cases, run the command like so:
 </p>
 <pre>
     ssh_keygen
@@ -81,8 +89,9 @@ To create <b>id_rsa</b> and
 <b>id_rsa.pub</b>,
 just follow the default actions.
 You can choose another name when you create your keys
-but it make sthings a bit easier if you stick to the defaults.
-As you will see, you will need these keys when you create your server.
+but it make things a bit easier if you stick to the defaults.
+As you will see, you will need these key files
+when you create your server.
 </p>
 
 <p>
@@ -101,24 +110,17 @@ As you will see, you will need these keys when you create your server.
 	This text is called <b>the challenge</b>.
 	Later, you want to send me an email
 	which is guaranteed to come from you and not some imposter.
-	You encrypt the agreed challenge with your private key and put the result
+	You encrypt the agreed challenge with your private key
+	and put the result
 	in the email.
 	The encrypted version is a pile of unreadable junk.
-	If I can decrypt it junk
+	If I can decrypt this junk
 	with your public key and the result is "Abracadabra",
-	then I know that it was you that sent the email.
-	Only your private key can produce the unreadable junk that,
+	then I know that it was you that sent the email,
+	because only your private key can produce the unreadable junk that,
 	when decrypted, produces the challenge.
 </p>
-<p>
-	(To prevent an evesdropper intercepting the encrypted text and using it
-	in an email of their own,
-	you can add the current date and time to the challenge
-	and encrypt the result.
-	That way, the encrypted version is time-sensitive
-	and can't be re-used.)
 
-</p>
 <p>
 	Strictly, I know that the email was sent by somebody
 	who has the private key that matches
@@ -142,7 +144,7 @@ As you will see, you will need these keys when you create your server.
 	Under the covers, the authentication procedure goes something like this:
 	when you try to log into the remote machine from your local machine,
 	behind the scenes
-	they agree a challenge.
+	the two machines agree a challenge.
 	Your local computer encrypts the challenge
 	using your private key and sends the result
 	across the Internet to the remote machine.
@@ -159,10 +161,17 @@ As you will see, you will need these keys when you create your server.
 	and they can't use what they can see to masquerade as you
 	and log in to your server.
 </p>
+<p>
+	(The scheme is a bit more complicated than that,
+	to prevent
+	an eavesdropper simply copying the encrypted
+	challenge and reusing it,
+	but that's the general idea.)
+</p>
 
 <p>
 	The key mechanism allows you to create users on your
-	computer that don't have a password
+	server that don't have a password
 	and can only connect to it using the keys.
 	As we will see,
 	as soon as you set up your server,
@@ -176,8 +185,11 @@ As you will see, you will need these keys when you create your server.
 <p>
 	You can use an SSH key pair
 	to authenticate yourself on all sort of systems.
-	For example <a
-		href='https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/'>github</a>.
+	For example
+	<a
+		href='https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/'>
+		github.com
+	</a>.
 
 </p>
 <p>
@@ -185,18 +197,14 @@ As you will see, you will need these keys when you create your server.
 	and you want to connect to it from another computer,
 	you have to create a .ssh directory in your home
 	directory on the second computer and copy the keys across.
+	(Don't forget to set the access permissions -
+	the private key should be readable only by you.)
 </p>
 <p>
 	If you overwrite or remove your key files,
 	you can't recreate them,
 	so you will lose access to whichever system you were using them to connect to.
 	It's a good idea to keep a backup copy on a memory stick.
-</p>
-<p>
-	You can have many sets of keys with different names that you use
-	to access different systems.
-	When you create a key pair,
-	be careful not to overwrite any existing key files.
 </p>
 
 <table>
