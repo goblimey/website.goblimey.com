@@ -2,77 +2,91 @@ include(sourceRoot/definitions.m4)
 define(pageTitle, `Internet Services')
 include(sourceRoot/leader.m4.html)
 
-	<h2>Internet Services for Small Organisations</h2>
-	<p>
-		This document is aimed at small organisation such as local societies
-		and small companies,
-		and explains
-		how to
-		set up your own Internet servers.
-	</p>
-	<p>
-		A <b>server</b> is just a computer connected to the Internet
-		with a published name.
-		Internet services run on servers.
-		Your organisation may be already using Internet servers,
-		running on somebody else's infrastructure.
-		Companies that build websites often provide the servers that run them.
-		This tends to be expensive and restrictive,
-		and if the website company goes out of business,
-		potentially disastrous.
-	<p>
-		It's quite cheap these days to run your own servers
-		on the Internet,
-		and fairly easy.
-		There's lots of help out there telling you how to do it.
-		The problem is that the help is scattered across 
-		a lot of documents in a lot of places
-		and each document assumes lots of specialist knowledge.
-		My instructions here aim to show the whole process from start to finish.
-		Inevitably that makes them look a bit complicated
-		but each step is fairly simple and you just need to go through them one by one.
-	</p>
-	<p>
-		There's also details here of issues that you may not need to understand right now.
-		Trust me, you will need to understand them one day.
-	</p>
+<h2>Internet Services for Small Organisations</h2>
+<p>
+	This document is aimed at small organisation such as local societies
+	and small companies.
+	It explains
+	how to
+	set up your own Internet servers.
+</p>
+<p>
+	A <b>server</b> is just a computer
+	connected to the Internet
+	and which has a published name,
+	so that other computers can find it.
+	Internet services such as
+	a web server or a mail server
+	run on servers.
+	(Unfortunately, the word "server"
+	can also mean a piece of software
+	providing a service
+	which is running on a server computer.
+	That causes confusion.)
+</p>
+<p>
+	Companies that build websites often
+	provide the servers that run them.
+	This tends to be expensive and restrictive.
+	If the website company goes out of business,
+	it's potentially disastrous.
+</p>
+<p>
+	It's quite cheap these days to run your own servers
+	on the Internet,
+	and fairly easy.
+	There's lots of help out there telling you how to do it.
+	The problem is that the help is scattered across
+	a lot of documents in a lot of places
+	and each document assumes lots of specialist knowledge.
+	My instructions here aim to show the whole process from start to finish.
+	Inevitably that makes them look a bit complicated
+	but each step is fairly simple and you just need to go through them one by one.
+</p>
+<p>
+	There's also details here of issues that
+	you may not need to understand right now.
+	Trust me, you will need to understand them one day.
+</p>
 
-	<p>
-		I mention a number of companies here, notably Ionos, Namecheap and Digital Ocean. 
-		My only commercial relationship with them is as a customer.
-		Other similar services are available from other companies
-		and you can do your own research to find them.
-		If I gain any benefit by recommending a supplier in these instructions,
-		I make that clear.
-		Also, it will be a supplier that I really do use myself.
-	</p>
-	<p>
-		As you'll see pretty soon,
-		your server runs an operating system called Linux.
-		If you've not used Linux before,
-		I can offer some help.
-		You will find some free training software 
-		<a href='/projects/learn/index.html'>here</a>.
-		Modern versions of Microsoft Windows can run this software
-		so you can learn some Linux commands before spending money on a server.
-	</p>
-	<p>
-		Nerds like me distinguish between <b>The Internet</b>
-		which is a network of computers offering services of all sorts,
-		and <b>The World-Wide Web</b>
-		which is all of the web servers
-		connected to that network.
-		To put that another way,
-		the Internet has web servers connected to it,
-		but it also has
-		mail servers, instant messaging servers and lots of other stuff.
-	</p>
-	<p>
-		These pages describe the steps you need to take to create a web server:
-	</p>
-	<p><a href='ssh.html'>Creating SSH keys</a>.</p>
-	<p><a href='domain.html'>Renting a domain</a>.</p>
-	<p><a href='server.html'>Renting a server</a>.</p>
-	<p><a href='web.server.html'>Installing Software</a>.</p>
+<p>
+	I mention a number of supplier companies here,
+	notably Ionos, Namecheap and Digital Ocean.
+	My only commercial relationship with them is as a customer.
+	Other similar services are available from other companies
+	and you can do your own research to find them.
+	If I gain any benefit by recommending a supplier in these instructions,
+	I make that clear.
+	Also, it's a supplier that I really do use myself,
+	not one that's just paying me to promote it.
+</p>
+<p>
+	As you'll see pretty soon,
+	your server runs an operating system called Linux.
+	If you've not used Linux before,
+	I can offer some help.
+	You will find some free training software
+	<a href='/projects/learn/index.html'>here</a>.
+	Modern versions of Microsoft Windows can run this software
+	so you can learn some Linux commands before spending money on a server.
+</p>
+<p>
+	Nerds like me distinguish between <b>The Internet</b>
+	which is a network of computers offering services of all sorts,
+	and <b>The World-Wide Web</b>
+	which is all of the web servers
+	connected to that network.
+	To put that another way,
+	the Internet has web servers connected to it,
+	but it also has
+	mail servers, instant messaging servers and lots of other stuff.
+</p>
+<p>
+	These pages describe the steps you need to take to create a web server:
+</p>
+<p><a href='ssh.html'>Creating SSH keys</a>.</p>
+<p><a href='domain.html'>Renting a domain</a>.</p>
+<p><a href='server.html'>Renting a server</a>.</p>
+<p><a href='web.server.html'>Installing Software</a>.</p>
 
 include(sourceRoot/trailer.m4.html)
